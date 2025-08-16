@@ -1,39 +1,46 @@
 /* ===========================
-   🌈 Digital Garden 多彩配色
+   🌈 Digital Garden 多彩全套样式
    放在 src/site/styles/user/
    =========================== */
 
-/* 全局字体 */
+/* ===== 全局字体 & 行高 ===== */
 body {
   font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   line-height: 1.7;
 }
 
-/* 亮色主题 */
+/* ===== 亮色主题 ===== */
 body.theme-light {
-  --graph-main: #ff6f61;  /* 珊瑚红 */
-  --graph-muted: #a0a0a0;
+  --graph-main: #ff6f61;  /* 主色珊瑚红 */
+  --graph-muted: #aaa;     /* 次要灰色 */
   background: #fefefe;
   color: #222;
 }
 
-/* 暗色主题 */
+/* ===== 暗色主题 ===== */
 body.theme-dark {
-  --graph-main: #7ae7ff;  /* 青蓝色 */
-  --graph-muted: #555;
+  --graph-main: #7ae7ff;  /* 主色青蓝 */
+  --graph-muted: #555;     /* 次要深灰 */
   background: #1a1a1a;
   color: #e6e6e6;
 }
 
-/* 彩色标题 */
-h1 { color: #ff4d6d; }   /* 热情红 */
-h2 { color: #ff9f1c; }   /* 活力橙 */
-h3 { color: #2ec4b6; }   /* 清新蓝绿 */
-h4 { color: #9d4edd; }   /* 高贵紫 */
-h5 { color: #00bbf9; }   /* 湖水蓝 */
-h6 { color: #80ed99; }   /* 绿色调 */
+/* ===== 彩色标题 h1~h6 ===== */
+body.theme-light h1 { color: #ff4d6d !important; }
+body.theme-light h2 { color: #ff9f1c !important; }
+body.theme-light h3 { color: #2ec4b6 !important; }
+body.theme-light h4 { color: #9d4edd !important; }
+body.theme-light h5 { color: #00bbf9 !important; }
+body.theme-light h6 { color: #80ed99 !important; }
 
-/* 引用块美化 */
+body.theme-dark h1 { color: #ff6f61 !important; }
+body.theme-dark h2 { color: #ffd166 !important; }
+body.theme-dark h3 { color: #06d6a0 !important; }
+body.theme-dark h4 { color: #c084fc !important; }
+body.theme-dark h5 { color: #48cae4 !important; }
+body.theme-dark h6 { color: #90ee90 !important; }
+
+/* ===== 引用块 ===== */
 blockquote {
   background: rgba(255, 255, 255, 0.07);
   border-left: 6px solid #ff9f1c;
@@ -44,7 +51,7 @@ blockquote {
   color: #ffd166;
 }
 
-/* 链接渐变色效果 */
+/* ===== 链接效果 ===== */
 a {
   color: #06d6a0;
   text-decoration: none;
@@ -56,7 +63,7 @@ a:hover {
   text-decoration: underline;
 }
 
-/* 行内代码高亮 */
+/* ===== 行内代码 ===== */
 p > code {
   background: #272822;
   color: #f92672;
@@ -66,22 +73,12 @@ p > code {
   font-size: 0.95em;
 }
 
-/* Callout 彩色分类 */
-.callout[data-callout="info"] {
-  --callout-color: 33, 150, 243;   /* 蓝色 */
-}
-.callout[data-callout="warning"] {
-  --callout-color: 255, 193, 7;    /* 黄色 */
-}
-.callout[data-callout="danger"] {
-  --callout-color: 244, 67, 54;    /* 红色 */
-}
-.callout[data-callout="success"] {
-  --callout-color: 76, 175, 80;    /* 绿色 */
-}
-.callout[data-callout="example"] {
-  --callout-color: 156, 39, 176;   /* 紫色 */
-}
+/* ===== Callout 彩色分类 ===== */
+.callout[data-callout="info"] { --callout-color: 33, 150, 243; }   /* 蓝色 */
+.callout[data-callout="warning"] { --callout-color: 255, 193, 7; }  /* 黄色 */
+.callout[data-callout="danger"] { --callout-color: 244, 67, 54; }   /* 红色 */
+.callout[data-callout="success"] { --callout-color: 76, 175, 80; }  /* 绿色 */
+.callout[data-callout="example"] { --callout-color: 156, 39, 176; } /* 紫色 */
 
 .callout {
   border-left: 4px solid rgb(var(--callout-color));
@@ -91,10 +88,10 @@ p > code {
   margin: 1em 0;
 }
 
-/* 图片样式（取消居中，只加点修饰） */
+/* ===== 图片 ===== */
 img {
   max-width: 100%;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  margin: 1.2em 0;
+  margin: 1.2em 0; /* 不居中，保持流式布局 */
 }
