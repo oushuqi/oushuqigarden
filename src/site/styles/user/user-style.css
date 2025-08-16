@@ -1,5 +1,5 @@
 /* ===========================
-   🌈 Digital Garden 多彩全套样式
+   🌈 Digital Garden 多彩全套样式（含彩虹标题动画）
    放在 src/site/styles/user/
    =========================== */
 
@@ -13,7 +13,6 @@ body {
 body.theme-light {
   --graph-main: #ff6f61;  /* 主色珊瑚红 */
   --graph-muted: #aaa;     /* 次要灰色 */
-  background: #fefefe;
   color: #222;
 }
 
@@ -25,20 +24,31 @@ body.theme-dark {
   color: #e6e6e6;
 }
 
-/* ===== 彩色标题 h1~h6 ===== */
-body.theme-light h1 { color: #ff4d6d !important; }
-body.theme-light h2 { color: #ff9f1c !important; }
-body.theme-light h3 { color: #2ec4b6 !important; }
-body.theme-light h4 { color: #9d4edd !important; }
-body.theme-light h5 { color: #00bbf9 !important; }
-body.theme-light h6 { color: #80ed99 !important; }
+/* ===== 彩虹渐变标题 h1~h6 ===== */
+h1, h2, h3, h4, h5, h6 {
+  background: linear-gradient(
+    90deg,
+    #ff4d6d,  /* 红 */
+    #ff9f1c,  /* 橙 */
+    #2ec4b6,  /* 青绿 */
+    #9d4edd,  /* 紫 */
+    #00bbf9,  /* 蓝 */
+    #80ed99   /* 绿 */
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  background-size: 300% 300%;
+  animation: rainbow-slide 6s ease infinite;
+}
 
-body.theme-dark h1 { color: #ff6f61 !important; }
-body.theme-dark h2 { color: #ffd166 !important; }
-body.theme-dark h3 { color: #06d6a0 !important; }
-body.theme-dark h4 { color: #c084fc !important; }
-body.theme-dark h5 { color: #48cae4 !important; }
-body.theme-dark h6 { color: #90ee90 !important; }
+/* 彩虹渐变动画 */
+@keyframes rainbow-slide {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
 /* ===== 引用块 ===== */
 blockquote {
@@ -93,5 +103,5 @@ img {
   max-width: 100%;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  margin: 1.2em 0; /* 不居中，保持流式布局 */
+  margin: 1.2em 0; /* 保持流式布局，不居中 */
 }
