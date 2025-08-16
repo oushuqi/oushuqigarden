@@ -26,7 +26,7 @@ body.theme-dark {
 }
 
 /* ===== 标题 h1~h6 彩色（普通彩色） ===== */
-h1 { color: #ff4d6d }
+h1 { color: #ff4d6d !important; }
 h2 { color: #ff9f1c !important; }
 h3 { color: #2ec4b6 !important; }
 h4 { color: #9d4edd !important; }
