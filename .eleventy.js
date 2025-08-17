@@ -96,6 +96,35 @@ const tagRegex = /(^|\s|\>)(#[^\s!@#$%^&*()=+\.,\[{\]};:'"?><]+)(?!([^<]*>))/g;
 module.exports = function (eleventyConfig) {
   eleventyConfig.setLiquidOptions({
     dynamicPartials: true,
+    const Image = require("@11ty/eleventy-img");
+const path = require("path");
+
+module.exports = function(eleventyConfig) {
+  // 定义一个全局 Nunjucks 短代码 safeImage
+  eleventyConfig.addNunjucksAsyncShortcode("safeImage", async function(src, alt = "") {
+    const ext = path.extname(src).toLowerCase();
+
+    // 如果不是支持的格式 → 直接返回普通 <img>
+    if (![".jpg", ".jpeg", ".png", ".webp", ".avif"].includes(ext)) {
+      return `<img src="${src}" alt="${alt}">`;
+    }
+
+    // 如果是支持的格式 → 交给 eleventy-img 处理
+    let metadata = await Image(src, {
+      widths: [300, 600, 1200],
+      formats: ["webp", "jpeg"],
+      urlPath: "/images/",
+      outputDir: "./_site/images/"
+    });
+
+    return Image.generateHTML(metadata, {
+      alt,
+      loading: "lazy",
+      decoding: "async",
+    });
+  });
+};
+
   });
   let markdownLib = markdownIt({
     breaks: true,
