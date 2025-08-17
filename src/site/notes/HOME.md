@@ -3,9 +3,9 @@
 ---
 
 # Hi, there
-
 ![IMG_0647.png](/img/user/IMG_0647.png)
-*生命是一场奇遇，我希望你永远超级幸福。*
+
+*<生命是一场奇遇，我希望你永远超级幸福。>*
 __________________________________
 
 
@@ -14,8 +14,8 @@ __________________________________
 > [!multi-column] 
 
 > [!example] 近日编辑
-- [[直到世界尽头/summer time\|summer time]]
 - [[HOME\|HOME]]
+- [[直到世界尽头/summer time\|summer time]]
 - [[银河以外的心/仙女座\|仙女座]]
 - [[竖直图廊\|竖直图廊]]
 - [[宇宙的苹果核/爵乐\|爵乐]]
@@ -32,8 +32,7 @@ __________________________________
 { .block-language-dataview}
 
 
-```dataview
-table file.mtime as "Last Modified"
-from "Characters"
-sort file.mtime desc
-limit 5
+| File | Last Modified |
+| ---- | ------------- |
+
+{ .block-language-dataview}
