@@ -22,11 +22,19 @@
 > [!multi-column]
 
 > [!example] 近日编辑
-```dataview
-LIST
-WHERE date(today) - file.mtime <= dur(3 days)
-SORT file.mtime DESC
-LIMIT 5
+- [[HOME\|HOME]]
+- [[日记/08-16-25\|08-16-25]]
+- [[在梦境里遨游/记忆\|记忆]]
+- [[直到世界尽头/summer time\|summer time]]
+- [[宇宙的苹果核/爵乐\|爵乐]]
 
+{ .block-language-dataview}
 
+> [!note] 近日新建
+- [[日记/08-16-25\|08-16-25]]
+- [[在梦境里遨游/记忆\|记忆]]
+- [[Projects/README\|README]]
+- [[直到世界尽头/summer time\|summer time]]
+- [[HOME\|HOME]]
 
+{ .block-language-dataview}
