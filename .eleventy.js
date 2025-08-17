@@ -9,15 +9,11 @@ const htmlMinifier = require("html-minifier-terser");
 const pluginRss = require("@11ty/eleventy-plugin-rss");
 
 const { headerToId, namedHeadingsFilter } = require("./src/helpers/utils");
-const {
-  userMarkdownSetup,
-  userEleventySetup,
-} = require("./src/helpers/userSetup");
+const { userMarkdownSetup, userEleventySetup } = require("./src/helpers/userSetup");
 
 const Image = require("@11ty/eleventy-img");
 const path = require("path");
 
-// 原 transformImage 函数保留
 function transformImage(src, cls, alt, sizes, widths = ["500", "700", "auto"]) {
   let options = {
     widths: widths,
@@ -25,15 +21,14 @@ function transformImage(src, cls, alt, sizes, widths = ["500", "700", "auto"]) {
     outputDir: "./dist/img/optimized",
     urlPath: "/img/optimized",
   };
-
   Image(src, options);
   let metadata = Image.statsSync(src, options);
   return metadata;
 }
 
 function getAnchorLink(filePath, linkTitle) {
-  const {attributes, innerHTML} = getAnchorAttributes(filePath, linkTitle);
-  return `<a ${Object.keys(attributes).map(key => `${key}="${attributes[key]}"`).join(" ")}>${innerHTML}</a>`;
+  const { attributes, innerHTML } = getAnchorAttributes(filePath, linkTitle);
+  return `<a ${Object.keys(attributes).map((key) => `${key}="${attributes[key]}"`).join(" ")}>${innerHTML}</a>`;
 }
 
 function getAnchorAttributes(filePath, linkTitle) {
@@ -51,85 +46,53 @@ function getAnchorAttributes(filePath, linkTitle) {
   let deadLink = false;
   try {
     const startPath = "./src/site/notes/";
-    const fullPath = fileName.endsWith(".md")
-      ? `${startPath}${fileName}`
-      : `${startPath}${fileName}.md`;
+    const fullPath = fileName.endsWith(".md") ? `${startPath}${fileName}` : `${startPath}${fileName}.md`;
     const file = fs.readFileSync(fullPath, "utf8");
     const frontMatter = matter(file);
-    if (frontMatter.data.permalink) {
-      permalink = frontMatter.data.permalink;
-    }
-    if (
-      frontMatter.data.tags &&
-      frontMatter.data.tags.indexOf("gardenEntry") != -1
-    ) {
-      permalink = "/";
-    }
-    if (frontMatter.data.noteIcon) {
-      noteIcon = frontMatter.data.noteIcon;
-    }
+    if (frontMatter.data.permalink) permalink = frontMatter.data.permalink;
+    if (frontMatter.data.tags && frontMatter.data.tags.indexOf("gardenEntry") != -1) permalink = "/";
+    if (frontMatter.data.noteIcon) noteIcon = frontMatter.data.noteIcon;
   } catch {
     deadLink = true;
   }
 
   if (deadLink) {
     return {
-      attributes: {
-        "class": "internal-link is-unresolved",
-        "href": "/404",
-        "target": "",
-      },
+      attributes: { class: "internal-link is-unresolved", href: "/404", target: "" },
       innerHTML: title,
-    }
+    };
   }
+
   return {
-    attributes: {
-      "class": "internal-link",
-      "target": "",
-      "data-note-icon": noteIcon,
-      "href": `${permalink}${headerLinkPath}`,
-    },
+    attributes: { class: "internal-link", target: "", "data-note-icon": noteIcon, href: `${permalink}${headerLinkPath}` },
     innerHTML: title,
-  }
+  };
 }
 
 const tagRegex = /(^|\s|\>)(#[^\s!@#$%^&*()=+\.,\[{\]};:'"?><]+)(?!([^<]*>))/g;
 
 module.exports = function (eleventyConfig) {
   // ----------------------------
-  // safeImage 短代码
+  // Nunjucks 短代码 safeImage
   // ----------------------------
-  eleventyConfig.addNunjucksAsyncShortcode("safeImage", async function(src, alt = "") {
+  eleventyConfig.addNunjucksAsyncShortcode("safeImage", async function (src, alt = "") {
     const ext = path.extname(src).toLowerCase();
+    if (![".jpg", ".jpeg", ".png", ".webp", ".avif"].includes(ext)) return `<img src="${src}" alt="${alt}">`;
 
-    // 非图片格式直接返回 <img>
-    if (![".jpg", ".jpeg", ".png", ".webp", ".avif"].includes(ext)) {
-      return `<img src="${src}" alt="${alt}">`;
-    }
-
-    // 支持格式交给 eleventy-img
     let metadata = await Image(src, {
       widths: [300, 600, 1200],
       formats: ["webp", "jpeg"],
       urlPath: "/images/",
-      outputDir: "./_site/images/"
+      outputDir: "./_site/images/",
     });
 
-    return Image.generateHTML(metadata, {
-      alt,
-      loading: "lazy",
-      decoding: "async",
-    });
+    return Image.generateHTML(metadata, { alt, loading: "lazy", decoding: "async" });
   });
 
   // ----------------------------
   // Markdown 设置
   // ----------------------------
-  let markdownLib = markdownIt({
-    breaks: true,
-    html: true,
-    linkify: true,
-  })
+  let markdownLib = markdownIt({ breaks: true, html: true, linkify: true })
     .use(require("markdown-it-anchor"), { slugify: headerToId })
     .use(require("markdown-it-mark"))
     .use(require("markdown-it-footnote"))
@@ -139,10 +102,11 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.setLibrary("md", markdownLib);
 
   // ----------------------------
-  // 各种过滤器、Transform 和插件
+  // 过滤器
   // ----------------------------
-  eleventyConfig.addFilter("isoDate", date => date && date.toISOString());
-  eleventyConfig.addFilter("link", str => {
+  eleventyConfig.addFilter("isoDate", (date) => date && date.toISOString());
+
+  eleventyConfig.addFilter("link", (str) => {
     return (
       str &&
       str.replace(/\[\[(.*?\|.*?)\]\]/g, function (match, p1) {
@@ -151,7 +115,8 @@ module.exports = function (eleventyConfig) {
       })
     );
   });
-  eleventyConfig.addFilter("taggify", str => {
+
+  eleventyConfig.addFilter("taggify", (str) => {
     return (
       str &&
       str.replace(tagRegex, (match, precede, tag) =>
@@ -160,24 +125,43 @@ module.exports = function (eleventyConfig) {
     );
   });
 
+  eleventyConfig.addFilter("searchableTags", (str) => {
+    let tags;
+    let match = str && str.match(tagRegex);
+    if (match) tags = match.map((m) => `"${m.split("#")[1]}"`).join(", ");
+    return tags ? `${tags},` : "";
+  });
+
+  eleventyConfig.addFilter("hideDataview", (str) => {
+    return (
+      str &&
+      str.replace(/\(\S+\:\:(.*)\)/g, (_, value) => value.trim())
+    );
+  });
+
+  eleventyConfig.addFilter("jsonify", (variable) => JSON.stringify(variable) || '""');
+
+  eleventyConfig.addFilter("validJson", (variable) => {
+    if (Array.isArray(variable)) return variable.map((x) => x.replaceAll("\\", "\\\\")).join(",");
+    else if (typeof variable === "string") return variable.replaceAll("\\", "\\\\");
+    return variable;
+  });
+
+  // ----------------------------
+  // 插件
+  // ----------------------------
   eleventyConfig.addPassthroughCopy("src/site/img");
   eleventyConfig.addPassthroughCopy("src/site/scripts");
   eleventyConfig.addPassthroughCopy("src/site/styles/_theme.*.css");
   eleventyConfig.addPlugin(faviconsPlugin, { outputDir: "dist" });
-  eleventyConfig.addPlugin(tocPlugin, {
-    ul: true,
-    tags: ["h1", "h2", "h3", "h4", "h5", "h6"],
-  });
+  eleventyConfig.addPlugin(tocPlugin, { ul: true, tags: ["h1","h2","h3","h4","h5","h6"] });
   eleventyConfig.addPlugin(pluginRss);
 
+  // 用户自定义 setup
   userEleventySetup(eleventyConfig);
 
   return {
-    dir: {
-      input: "src/site",
-      output: "dist",
-      data: `_data`,
-    },
+    dir: { input: "src/site", output: "dist", data: `_data` },
     templateFormats: ["njk", "md", "11ty.js"],
     htmlTemplateEngine: "njk",
     markdownTemplateEngine: false,
