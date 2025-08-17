@@ -13,7 +13,6 @@ body {
 body.theme-light {
   --graph-main: #ff6f61;  /* 主色珊瑚红 */
   --graph-muted: #aaa;     /* 次要灰色 */
-  background: #fefefe;
   color: #222;
 }
 
@@ -99,10 +98,3 @@ p > code {
   margin: 1em 0;
 }
 
-/* ===== 图片 ===== */
-img {
-  max-width: 100%;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  margin: 1.2em 0; /* 保持流式布局，不居中 */
-}
