@@ -10,28 +10,6 @@ __________________________________
 
 
 
-
-> [!multi-column] 
-
-> [!example] 近日编辑
-- [[HOME\|HOME]]
-- [[直到世界尽头/summer time\|summer time]]
-- [[银河以外的心/仙女座\|仙女座]]
-- [[竖直图廊\|竖直图廊]]
-- [[宇宙的苹果核/爵乐\|爵乐]]
-
-{ .block-language-dataview}
-
-> [!note] 近日新建
-- [[竖直图廊\|竖直图廊]]
-- [[银河以外的心/仙女座\|仙女座]]
-- [[日记/08-16-25\|08-16-25]]
-- [[在梦境里遨游/记忆\|记忆]]
-- [[Projects/README\|README]]
-
-{ .block-language-dataview}
-
-
 | File | Last Modified |
 | ---- | ------------- |
 
