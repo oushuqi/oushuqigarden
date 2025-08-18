@@ -9,19 +9,30 @@ h1 {
     margin-top: 1 !important;
 }
 
-/* 左侧文件树标题彩色 */
-.filetree-sidebar .foldername-wrapper,
-.filetree-sidebar .notelink {
-    color: #ffef60 !important; /* 一级 */
+/* ===== 左侧文件树四个文件夹不同颜色 ===== */
+.filetree-sidebar .foldername-wrapper:nth-child(1),
+.filetree-sidebar .notelink:nth-child(1) {
+    color: #e74c3c !important; /* 红色 */
 }
 
-.filetree-sidebar .foldername-wrapper .inner-folder,
-.filetree-sidebar .notelink .filename {
-    color: #f06449 !important; /* 二级 */
+.filetree-sidebar .foldername-wrapper:nth-child(2),
+.filetree-sidebar .notelink:nth-child(2) {
+    color: #f1c40f !important; /* 黄色 */
 }
 
-/* 悬停效果 */
+.filetree-sidebar .foldername-wrapper:nth-child(3),
+.filetree-sidebar .notelink:nth-child(3) {
+    color: #2ecc71 !important; /* 绿色 */
+}
+
+.filetree-sidebar .foldername-wrapper:nth-child(4),
+.filetree-sidebar .notelink:nth-child(4) {
+    color: #3498db !important; /* 蓝色 */
+}
+
+/* 悬停高亮 */
 .filetree-sidebar .foldername-wrapper:hover,
 .filetree-sidebar .notelink:hover {
     color: #ffffff !important;
+    background-color: #34495e !important; /* 深蓝灰背景 */
 }
