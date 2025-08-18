@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"dg-home":true,"dg-pinned":true,"dg-show-backlinks":false,"permalink":"/HOME/","pinned":true,"tags":["gardenEntry"],"dgPassFrontmatter":true,"noteIcon":""}
+{"dg-publish":true,"dg-home":true,"dg-pinned":true,"dg-show-backlinks":"false","dg-show-toc":false,"permalink":"/HOME/","pinned":true,"tags":["gardenEntry"],"dgShowBacklinks":"false","dgPassFrontmatter":true,"noteIcon":""}
 ---
 
 # Hi, there
