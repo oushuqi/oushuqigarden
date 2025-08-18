@@ -11,42 +11,35 @@ h1 {
 
 /* 左侧大纲自动彩虹色 */
 .toc-container li a {
-    transition: color 0.3s;
+    transition: color 0.3s !important;
 }
 
-/* 彩虹色数组 */
-:root {
-    --toc-colors: #ffef60, #f06449, #d4fcc3, #72dcff, #bf80ff, #ff80bf;
+/* 第一层 */
+.toc-container > ul > li > a {
+    color: #ffef60 !important;
 }
 
-/* 每层级循环彩虹色 */
-.toc-container li a {
-    color: var(--text-normal); /* 默认颜色 */
+/* 第二层 */
+.toc-container ul ul > li > a {
+    color: #f06449 !important;
 }
 
-.toc-container li {
-    counter-reset: toc-level;
+/* 第三层 */
+.toc-container ul ul ul > li > a {
+    color: #d4fcc3 !important;
 }
 
-.toc-container li a {
-    color: inherit;
+/* 第四层 */
+.toc-container ul ul ul ul > li > a {
+    color: #72dcff !important;
 }
 
-.toc-container li {
-    --level: 0;
+/* 第五层及以后 */
+.toc-container ul ul ul ul ul > li > a {
+    color: #bf80ff !important;
 }
 
-.toc-container li ul li {
-    --level: calc(var(--level) + 1);
-}
-
-.toc-container li a {
-    color: 
-        /* 使用 CSS 变量循环彩虹色 */
-        var(--toc-colors, #ffef60);
-}
-
-/* 悬停效果 */
+/* 悬停时统一效果 */
 .toc-container li a:hover {
-    color: #ffffff;
+    color: #ffffff !important;
 }
