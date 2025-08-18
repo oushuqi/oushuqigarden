@@ -39,3 +39,8 @@ h1 {
         background-position: 100% 0%;
     }
 }
+
+/* 默认折叠所有子文件夹 */
+.filetree-sidebar .inner-folder {
+    display: none !important;
+}
