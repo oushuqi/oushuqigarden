@@ -8,11 +8,6 @@
 -------
 
 
-<div style="max-width: 600px; margin: 20px auto; text-align: center;">
-  <!-- 歌名和作者 -->
-  <h3 style="color: #6A5ACD; font-weight: bold; margin-bottom: 5px;">Mystery of Love</h3>
-  <p style="color: #555; margin-top: 0;">Modernized</p>
-
   <!-- 自适应播放器 -->
   <div style="position: relative; padding-bottom: 27.73%; height: 0; overflow: hidden; border-radius: 10px; border: 5px solid #6A5ACD;">
     <iframe 
