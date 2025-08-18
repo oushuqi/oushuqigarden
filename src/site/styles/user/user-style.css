@@ -9,18 +9,16 @@ h1 {
     margin-top: 2 !important;
 }
 
-/* 左侧目录标题彩色 */
-.sidebar h1 { color: #ffef60; }  /* 一级标题 */
-.sidebar h2 { color: #f06449; }  /* 二级标题 */
-.sidebar h3 { color: #d4fcc3; }  /* 三级标题 */
-
-/* 左侧目录链接文字 */
-.sidebar a {
-    color: #72dcff;   /* 默认蓝色 */
-    transition: color 0.3s; /* 悬停过渡效果 */
+/* 左侧目录（文件树）标题彩色 */
+.file-tree a {
+    color: #ffef60;           /* 默认颜色 */
+    transition: color 0.3s;   /* 悬停过渡效果 */
 }
 
-/* 悬停时改变颜色 */
-.sidebar a:hover {
-    color: #ffef60;   /* 悬停变黄色 */
+.file-tree a:hover {
+    color: #72dcff;           /* 悬停颜色 */
 }
+
+/* 可选：不同层级用不同颜色 */
+.file-tree ul ul a { color: #f06449; }    /* 第二层 */
+.file-tree ul ul ul a { color: #d4fcc3; } /* 第三层 */
