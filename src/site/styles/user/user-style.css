@@ -9,41 +9,4 @@ h1 {
     margin-top: 1 !important;
 }
 
-/* 左侧文件树前四个文件夹彩色 */
-.filetree-sidebar .foldername-wrapper.first-folder,
-.filetree-sidebar .notelink.first-note {
-    color: #e63946 !important; /* 红色 */
-}
 
-.filetree-sidebar .foldername-wrapper.second-folder,
-.filetree-sidebar .notelink.second-note {
-    color: #1d3557 !important; /* 深蓝 */
-}
-
-.filetree-sidebar .foldername-wrapper.third-folder,
-.filetree-sidebar .notelink.third-note {
-    color: #a8dadc !important; /* 浅蓝 */
-}
-
-.filetree-sidebar .foldername-wrapper.fourth-folder,
-.filetree-sidebar .notelink.fourth-note {
-    color: #f94144 !important; /* 略浅红 */
-}
-
-/* 悬停效果 */
-.filetree-sidebar .foldername-wrapper:hover,
-.filetree-sidebar .notelink:hover {
-    color: #000000 !important; /* 悬停变黑，更明显 */
-}
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const folders = document.querySelectorAll(".filetree-sidebar .foldername-wrapper");
-    const notes = document.querySelectorAll(".filetree-sidebar .notelink");
-    const classes = ["first-folder","second-folder","third-folder","fourth-folder"];
-    for (let i = 0; i < Math.min(folders.length, 4); i++) {
-        folders[i].classList.add(classes[i]);
-        notes[i]?.classList.add(classes[i].replace("-folder","-note"));
-    }
-});
-</script>
