@@ -9,45 +9,44 @@ h1 {
     margin-top: 1 !important;
 }
 
-/* ===== 左侧目录彩虹配色 ===== */
-.filetree-sidebar h1,
-.filetree-sidebar .foldername-wrapper,
-.filetree-sidebar .filename a {
-    transition: color 0.3s; /* 悬停渐变 */
+/* 左侧大纲自动彩虹色 */
+.toc-container li a {
+    transition: color 0.3s;
 }
 
-/* 第一层 - 黄色 */
-.filetree-sidebar > ul > li > .foldername-wrapper,
-.filetree-sidebar > ul > li > .filename a {
-    color: #ffef60;
+/* 彩虹色数组 */
+:root {
+    --toc-colors: #ffef60, #f06449, #d4fcc3, #72dcff, #bf80ff, #ff80bf;
 }
 
-/* 第二层 - 橙色 */
-.filetree-sidebar > ul > li > ul > li > .foldername-wrapper,
-.filetree-sidebar > ul > li > ul > li > .filename a {
-    color: #f06449;
+/* 每层级循环彩虹色 */
+.toc-container li a {
+    color: var(--text-normal); /* 默认颜色 */
 }
 
-/* 第三层 - 绿色 */
-.filetree-sidebar > ul > li > ul > li > ul > li > .foldername-wrapper,
-.filetree-sidebar > ul > li > ul > li > ul > li > .filename a {
-    color: #d4fcc3;
+.toc-container li {
+    counter-reset: toc-level;
 }
 
-/* 第四层 - 蓝色 */
-.filetree-sidebar > ul > li > ul > li > ul > li > ul > li > .foldername-wrapper,
-.filetree-sidebar > ul > li > ul > li > ul > li > ul > li > .filename a {
-    color: #72dcff;
+.toc-container li a {
+    color: inherit;
 }
 
-/* 第五层及更深 - 紫色 */
-.filetree-sidebar ul ul ul ul ul li .foldername-wrapper,
-.filetree-sidebar ul ul ul ul ul li .filename a {
-    color: #bf80ff;
+.toc-container li {
+    --level: 0;
 }
 
-/* 鼠标悬停变白色，所有层统一 */
-.filetree-sidebar .foldername-wrapper:hover,
-.filetree-sidebar .filename a:hover {
+.toc-container li ul li {
+    --level: calc(var(--level) + 1);
+}
+
+.toc-container li a {
+    color: 
+        /* 使用 CSS 变量循环彩虹色 */
+        var(--toc-colors, #ffef60);
+}
+
+/* 悬停效果 */
+.toc-container li a:hover {
     color: #ffffff;
 }
