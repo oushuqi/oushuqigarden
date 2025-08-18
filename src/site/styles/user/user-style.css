@@ -40,10 +40,16 @@ h1 {
     }
 }
 
-/* 默认折叠所有子文件夹 */
+/* 默认折叠所有子文件夹，但标题保持可见 */
 .filetree-sidebar .foldername-wrapper + .inner-folder {
-    display: none; /* 默认折叠子文件夹，但不隐藏父标题 */
+    display: none;
 }
+
+/* 展开子文件夹 */
+.filetree-sidebar .inner-folder.open {
+    display: block !important;
+}
+
 
 @import url('filetree-accordion.js');
 
