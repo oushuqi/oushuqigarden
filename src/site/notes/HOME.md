@@ -14,3 +14,6 @@ __________________________________
 | ---- | ------------- |
 
 { .block-language-dataview}
+
+
+<script type="module" src="/styles/user/filetree-accordion.js"></script>
