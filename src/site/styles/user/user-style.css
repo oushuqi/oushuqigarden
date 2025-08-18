@@ -40,4 +40,9 @@ h1 {
     }
 }
 
+/* 默认折叠所有子文件夹 */
+.filetree-sidebar .inner-folder {
+    display: none;
+}
+@import url('filetree-accordion.js');
 
