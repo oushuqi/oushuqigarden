@@ -3,25 +3,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!filetree) return;
 
-    // 获取所有文件夹 wrapper
-    const folders = filetree.querySelectorAll(".foldername-wrapper");
+    // 获取所有一级文件夹 wrapper
+    const topFolders = filetree.querySelectorAll(":scope > .foldername-wrapper");
 
-    folders.forEach(folder => {
+    topFolders.forEach(folder => {
         folder.addEventListener("click", function (e) {
-            e.stopPropagation(); // 防止事件冒泡
+            e.stopPropagation(); // 阻止冒泡
 
-            const currentlyOpen = filetree.querySelector(".foldername-wrapper.active");
+            const innerFolder = folder.querySelector(".inner-folder");
             const isActive = folder.classList.contains("active");
 
-            // 关闭其他已打开的文件夹
-            if (currentlyOpen && currentlyOpen !== folder) {
-                currentlyOpen.classList.remove("active");
-                const inner = currentlyOpen.querySelector(".inner-folder");
-                if (inner) inner.style.display = "none";
-            }
+            // 关闭同级其他已打开的文件夹
+            topFolders.forEach(f => {
+                if (f !== folder) {
+                    f.classList.remove("active");
+                    const inner = f.querySelector(".inner-folder");
+                    if (inner) inner.style.display = "none";
+                }
+            });
 
             // 切换当前点击的文件夹
-            const innerFolder = folder.querySelector(".inner-folder");
             if (innerFolder) {
                 if (isActive) {
                     innerFolder.style.display = "none";
