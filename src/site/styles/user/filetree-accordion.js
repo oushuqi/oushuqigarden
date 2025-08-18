@@ -1,25 +1,14 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // 找到所有父文件夹元素
-    const folders = document.querySelectorAll(".filetree-sidebar .foldername-wrapper");
+document.querySelectorAll('.foldername-wrapper').forEach(folder => {
+  folder.addEventListener('click', (e) => {
+    // 阻止点击子文件触发父折叠
+    if(e.target.classList.contains('notelink')) return;
 
-    folders.forEach(folder => {
-        folder.addEventListener("click", (e) => {
-            e.stopPropagation(); // 阻止事件冒泡影响子文件夹
-
-            const parent = folder.parentElement;
-
-            // 自动识别折叠状态的类名
-            const isOpenClass = Array.from(folder.classList).includes("is-open") ? "is-open" : "collapsed";
-
-            // 关闭同级其他文件夹
-            parent.querySelectorAll(".foldername-wrapper").forEach(sibling => {
-                if (sibling !== folder) {
-                    sibling.classList.remove(isOpenClass);
-                }
-            });
-
-            // 切换自己状态
-            folder.classList.toggle(isOpenClass);
-        });
+    // 关闭同级其他文件夹
+    document.querySelectorAll('.foldername-wrapper').forEach(f => {
+      if (f !== folder) f.classList.remove('active');
     });
+
+    // 切换当前文件夹
+    folder.classList.toggle('active');
+  });
 });
