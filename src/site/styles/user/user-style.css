@@ -1,12 +1,10 @@
-/* 只在首页调整标题上方间距 */
-.home h1 {
-    margin-top: 7px !important;
+/* 去掉首页标题上方空白 */
+body, main, .content, .site-header, .page-title {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
 }
 
-.home main,
-.home .content,
-.home .page-title,
-.home .site-header {
-    margin-top: 7px !important;
-    padding-top: 7px !important;
+/* 如果 h1 在某个特殊容器里，也一起覆盖 */
+h1 {
+    margin-top: 0 !important;
 }
