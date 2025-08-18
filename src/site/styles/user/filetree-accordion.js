@@ -1,30 +1,28 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // 只折叠有父文件夹的 inner-folder
-  document.querySelectorAll(".filetree-sidebar .foldername-wrapper .inner-folder").forEach(inner => {
-    inner.style.display = "none";
-  });
-
   const folders = document.querySelectorAll(".filetree-sidebar .foldername-wrapper");
 
   folders.forEach(folder => {
-    folder.addEventListener("click", e => {
-      e.stopPropagation();
+    // 给每个有子文件夹的文件夹添加标记
+    const innerFolder = folder.nextElementSibling;
+    if (innerFolder && innerFolder.classList.contains("inner-folder")) {
+      // 默认折叠
+      innerFolder.style.display = "none";
 
-      const inner = folder.querySelector(".inner-folder");
-      if (!inner) return; // 没有子文件夹就直接返回
+      // 点击标题折叠/展开
+      folder.addEventListener("click", () => {
+        const isOpen = innerFolder.style.display === "block";
 
-      const parent = folder.parentElement;
+        // 先关闭同级所有子文件夹
+        const siblingFolders = folder.parentElement.querySelectorAll(".inner-folder");
+        siblingFolders.forEach(sib => {
+          sib.style.display = "none";
+        });
 
-      // 只折叠同级的 inner-folder，而不是顶层文件夹
-      Array.from(parent.children).forEach(sib => {
-        if (sib !== folder && sib.classList.contains("foldername-wrapper")) {
-          const sibInner = sib.querySelector(".inner-folder");
-          if (sibInner) sibInner.style.display = "none";
+        // 再展开当前（如果之前是关闭的）
+        if (!isOpen) {
+          innerFolder.style.display = "block";
         }
       });
-
-      // 切换当前文件夹
-      inner.style.display = (inner.style.display === "block") ? "none" : "block";
-    });
+    }
   });
 });
