@@ -11,7 +11,7 @@
     scrolling="no" 
     frameborder="no" 
     allow="autoplay" 
-    src="https://soundcloud.com/user-817084408/mystery-of-love?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing">
+    src="https://w.soundcloud.com/player/?url=https://soundcloud.com/user-817084408/mystery-of-love?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing">
   </iframe>
 </div>
 
