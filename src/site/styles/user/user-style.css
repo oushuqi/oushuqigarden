@@ -9,37 +9,19 @@ h1 {
     margin-top: 1 !important;
 }
 
-/* 左侧大纲自动彩虹色 */
-.toc-container li a {
-    transition: color 0.3s !important;
+/* 左侧文件树标题彩色 */
+.filetree-sidebar .foldername-wrapper,
+.filetree-sidebar .notelink {
+    color: #ffef60 !important; /* 一级 */
 }
 
-/* 第一层 */
-.toc-container > ul > li > a {
-    color: #ffef60 !important;
+.filetree-sidebar .foldername-wrapper .inner-folder,
+.filetree-sidebar .notelink .filename {
+    color: #f06449 !important; /* 二级 */
 }
 
-/* 第二层 */
-.toc-container ul ul > li > a {
-    color: #f06449 !important;
-}
-
-/* 第三层 */
-.toc-container ul ul ul > li > a {
-    color: #d4fcc3 !important;
-}
-
-/* 第四层 */
-.toc-container ul ul ul ul > li > a {
-    color: #72dcff !important;
-}
-
-/* 第五层及以后 */
-.toc-container ul ul ul ul ul > li > a {
-    color: #bf80ff !important;
-}
-
-/* 悬停时统一效果 */
-.toc-container li a:hover {
+/* 悬停效果 */
+.filetree-sidebar .foldername-wrapper:hover,
+.filetree-sidebar .notelink:hover {
     color: #ffffff !important;
 }
