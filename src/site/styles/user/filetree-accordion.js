@@ -1,20 +1,25 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 找到所有父文件夹标题
-    const folderHeaders = document.querySelectorAll(".filetree-sidebar .foldername-wrapper");
+    // 找到所有父文件夹元素
+    const folders = document.querySelectorAll(".filetree-sidebar .foldername-wrapper");
 
-    folderHeaders.forEach(header => {
-        header.addEventListener("click", () => {
-            const subFolder = header.nextElementSibling;
-            
-            if (!subFolder || !subFolder.classList.contains("inner-folder")) return;
+    folders.forEach(folder => {
+        folder.addEventListener("click", (e) => {
+            e.stopPropagation(); // 阻止事件冒泡影响子文件夹
 
-            // 手风琴：关闭同级其他展开的子文件夹
-            const siblings = Array.from(header.parentElement.children)
-                                  .filter(el => el !== subFolder && el.classList.contains("inner-folder"));
-            siblings.forEach(sib => sib.classList.remove("open"));
+            const parent = folder.parentElement;
 
-            // 切换当前点击的子文件夹
-            subFolder.classList.toggle("open");
+            // 自动识别折叠状态的类名
+            const isOpenClass = Array.from(folder.classList).includes("is-open") ? "is-open" : "collapsed";
+
+            // 关闭同级其他文件夹
+            parent.querySelectorAll(".foldername-wrapper").forEach(sibling => {
+                if (sibling !== folder) {
+                    sibling.classList.remove(isOpenClass);
+                }
+            });
+
+            // 切换自己状态
+            folder.classList.toggle(isOpenClass);
         });
     });
 });
