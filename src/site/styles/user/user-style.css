@@ -41,8 +41,9 @@ h1 {
 }
 
 /* 默认折叠所有子文件夹 */
-.filetree-sidebar .inner-folder {
-    display: none;
+.filetree-sidebar .foldername-wrapper + .inner-folder {
+    display: none; /* 默认折叠子文件夹，但不隐藏父标题 */
 }
+
 @import url('filetree-accordion.js');
 
