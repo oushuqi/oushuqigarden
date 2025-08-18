@@ -1,37 +1,43 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const filetree = document.querySelector(".filetree-sidebar");
+document.addEventListener("DOMContentLoaded", () => {
+    const folderWrappers = document.querySelectorAll(".filetree-sidebar .foldername-wrapper");
 
-    if (!filetree) return;
+    // 默认折叠所有子文件夹
+    folderWrappers.forEach(wrapper => {
+        const innerFolder = wrapper.querySelector(".inner-folder");
+        if (innerFolder) innerFolder.style.display = "none";
+    });
 
-    // 获取所有一级文件夹 wrapper
-    const topFolders = filetree.querySelectorAll(":scope > .foldername-wrapper");
+    // 如果有当前激活笔记，展开其路径
+    const activeNote = document.querySelector(".filetree-sidebar .notelink.active-note");
+    if (activeNote) {
+        let parent = activeNote.parentElement;
+        while (parent && parent.classList.contains("filetree-sidebar")) {
+            const folderWrapper = parent.querySelector(".foldername-wrapper");
+            const innerFolder = parent.querySelector(".inner-folder");
+            if (innerFolder) innerFolder.style.display = "block";
+            parent = parent.parentElement;
+        }
+    }
 
-    topFolders.forEach(folder => {
-        folder.addEventListener("click", function (e) {
-            e.stopPropagation(); // 阻止冒泡
+    // 点击事件处理
+    folderWrappers.forEach(wrapper => {
+        wrapper.addEventListener("click", (e) => {
+            e.stopPropagation(); // 阻止事件冒泡
 
-            const innerFolder = folder.querySelector(".inner-folder");
-            const isActive = folder.classList.contains("active");
+            const parent = wrapper.parentElement;
+            const innerFolder = wrapper.querySelector(".inner-folder");
+            if (!innerFolder) return;
 
-            // 关闭同级其他已打开的文件夹
-            topFolders.forEach(f => {
-                if (f !== folder) {
-                    f.classList.remove("active");
-                    const inner = f.querySelector(".inner-folder");
-                    if (inner) inner.style.display = "none";
+            // 手风琴逻辑：关闭同级其他文件夹
+            Array.from(parent.children).forEach(sibling => {
+                if (sibling !== wrapper) {
+                    const sibInner = sibling.querySelector(".inner-folder");
+                    if (sibInner) sibInner.style.display = "none";
                 }
             });
 
-            // 切换当前点击的文件夹
-            if (innerFolder) {
-                if (isActive) {
-                    innerFolder.style.display = "none";
-                    folder.classList.remove("active");
-                } else {
-                    innerFolder.style.display = "block";
-                    folder.classList.add("active");
-                }
-            }
+            // 切换当前文件夹显示/隐藏
+            innerFolder.style.display = innerFolder.style.display === "block" ? "none" : "block";
         });
     });
 });
