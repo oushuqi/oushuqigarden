@@ -1,24 +1,53 @@
 /* 去掉首页标题上方空白 */
 body, main, .content, .site-header, .page-title {
-    margin-top: 2 !important;
-    padding-top: 2 !important;
+    margin-top: 1 !important;
+    padding-top: 1 !important;
 }
 
 /* 如果 h1 在某个特殊容器里，也一起覆盖 */
 h1 {
-    margin-top: 2 !important;
+    margin-top: 1 !important;
 }
 
-/* 左侧目录（文件树）标题彩色 */
-.file-tree a {
-    color: #ffef60;           /* 默认颜色 */
-    transition: color 0.3s;   /* 悬停过渡效果 */
+/* ===== 左侧目录彩虹配色 ===== */
+.filetree-sidebar h1,
+.filetree-sidebar .foldername-wrapper,
+.filetree-sidebar .filename a {
+    transition: color 0.3s; /* 悬停渐变 */
 }
 
-.file-tree a:hover {
-    color: #72dcff;           /* 悬停颜色 */
+/* 第一层 - 黄色 */
+.filetree-sidebar > ul > li > .foldername-wrapper,
+.filetree-sidebar > ul > li > .filename a {
+    color: #ffef60;
 }
 
-/* 可选：不同层级用不同颜色 */
-.file-tree ul ul a { color: #f06449; }    /* 第二层 */
-.file-tree ul ul ul a { color: #d4fcc3; } /* 第三层 */
+/* 第二层 - 橙色 */
+.filetree-sidebar > ul > li > ul > li > .foldername-wrapper,
+.filetree-sidebar > ul > li > ul > li > .filename a {
+    color: #f06449;
+}
+
+/* 第三层 - 绿色 */
+.filetree-sidebar > ul > li > ul > li > ul > li > .foldername-wrapper,
+.filetree-sidebar > ul > li > ul > li > ul > li > .filename a {
+    color: #d4fcc3;
+}
+
+/* 第四层 - 蓝色 */
+.filetree-sidebar > ul > li > ul > li > ul > li > ul > li > .foldername-wrapper,
+.filetree-sidebar > ul > li > ul > li > ul > li > ul > li > .filename a {
+    color: #72dcff;
+}
+
+/* 第五层及更深 - 紫色 */
+.filetree-sidebar ul ul ul ul ul li .foldername-wrapper,
+.filetree-sidebar ul ul ul ul ul li .filename a {
+    color: #bf80ff;
+}
+
+/* 鼠标悬停变白色，所有层统一 */
+.filetree-sidebar .foldername-wrapper:hover,
+.filetree-sidebar .filename a:hover {
+    color: #ffffff;
+}
