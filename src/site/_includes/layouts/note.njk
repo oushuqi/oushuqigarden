@@ -74,6 +74,24 @@ permalink: "notes/{{ page.fileSlug | slugify }}/"
       {% for imp in dynamics.notes.afterContent %}
         {% include imp %}
       {% endfor %}
+
+      {{ content | hideDataview | taggify | link | safe }}
+{% comment %} 上下篇导航 {% endcomment %}
+{% if previousNote or nextNote %}
+  <nav class="note-navigation">
+    {% if previousNote %}
+      <a href="{{ previousNote.permalink }}" class="prev-note">← 上一篇: {{ previousNote.title }}</a>
+    {% else %}
+      <span></span>
+    {% endif %}
+    {% if nextNote %}
+      <a href="{{ nextNote.permalink }}" class="next-note">下一篇: {{ nextNote.title }} →</a>
+    {% else %}
+      <span></span>
+    {% endif %}
+  </nav>
+{% endif %}
+
     </main>
 
     {% if settings.dgShowBacklinks === true or settings.dgShowLocalGraph === true or settings.dgShowToc === true%}
