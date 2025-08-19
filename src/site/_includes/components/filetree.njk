@@ -11,14 +11,12 @@
                      x-data="{isOpen: $persist(false).as('{{currentPath}}')}"
                      @click.stop="
                         isOpen = !isOpen;
-                        // 如果是第一级文件夹，折叠其他第一级
-                        if(step === 0 && isOpen){
-                            $el.parentElement.querySelectorAll(':scope > .inner-folder').forEach(f=>{
-                                if(f !== $el){
-                                    f.__x.$data.isOpen = false;
-                                }
-                            })
-                        }
+                        // 折叠同级其他文件夹
+                        $el.parentElement.querySelectorAll(':scope > .inner-folder').forEach(f=>{
+                            if(f !== $el){
+                                f.__x.$data.isOpen = false;
+                            }
+                        })
                      ">
                     <div class="foldername-wrapper align-icon">
                         <i x-show="isOpen" style="display: none;" icon-name="chevron-down"></i>
