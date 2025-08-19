@@ -1,23 +1,25 @@
-<div class="search-container" id="globalsearch" onclick="toggleSearch()">
-    <div class="search-box">
-        <input type="search" id="term" placeholder="Start typing...">
-        <div id="search-results"></div>
-        <footer class="search-box-footer">
-            <div class="navigation-hint">
-                <span>Enter to select</span>
-            </div>
+<form class="search-container" id="globalsearch" role="search" onsubmit="return false;" onclick="toggleSearch()">
+  <div class="search-box">
+    <label for="term" class="sr-only">搜索</label>
+    <input type="search" id="term" name="q" placeholder="Start typing..." aria-label="搜索内容">
 
-            <div class="navigation-hint align-icon">
-                <i  icon-name="arrow-up" aria-hidden="true"></i>
-                <i  icon-name="arrow-down" aria-hidden="true"></i>
-                <span>to navigate</span>
-            </div>
+    <div id="search-results"></div>
 
-            <div class="navigation-hint">
-                <span>ESC to close</span>
-            </div>
+    <footer class="search-box-footer">
+      <div class="navigation-hint">
+        <span>Enter to select</span>
+      </div>
 
-        </footer>
-    </div>
-</div>
-{%include "components/searchScript.njk"%}
+      <div class="navigation-hint align-icon">
+        <i icon-name="arrow-up" aria-hidden="true"></i>
+        <i icon-name="arrow-down" aria-hidden="true"></i>
+        <span>to navigate</span>
+      </div>
+
+      <div class="navigation-hint">
+        <span>ESC to close</span>
+      </div>
+    </footer>
+  </div>
+</form>
+{% include "components/searchScript.njk" %}
