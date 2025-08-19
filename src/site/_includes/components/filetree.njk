@@ -13,8 +13,8 @@
                  @click="
                     // 切换自己
                     isOpen = !isOpen;
-                    // 仅折叠同级（step === 0 表示第一级）
-                    if(step === 0){
+                    // 仅折叠同级（step === 1 表示第一级）
+                    if(step === 1){
                         $el.parentElement.querySelectorAll('.inner-folder').forEach(f=>{
                             if(f !== $el && f.__x) f.__x.$data.isOpen = false;
                         })
