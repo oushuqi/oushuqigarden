@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"tags":["飞花","note","爱"],"dg-order":"1","character":12,"permalink":"/03-直到世界尽头/summer time/","dgPassFrontmatter":true,"noteIcon":""}
+{"dg-publish":true,"tags":["飞花","爱"],"dg-order":"1","character":12,"permalink":"/03-直到世界尽头/summer time/","dgPassFrontmatter":true,"noteIcon":""}
 ---
 
 
@@ -10,21 +10,10 @@ yousbdh sjcnbv eee e  e xsdUbcso sfihj
 
 
 <div class="photo-album">
-  <div class="album-track">
-    <div class="album-item">
-      <img src="https://res.cloudinary.com/dix4ngy25/image/upload/v1668068263/dgdocs/CleanShot_2022-11-10_at_09.17.28_2x.png" onclick="openLightbox(this)" />
-    </div>
-    <div class="album-item">
-      <img src="https://res.cloudinary.com/dix4ngy25/image/upload/v1668068103/dgdocs/CleanShot_2022-11-10_at_09.14.47_2x.png" onclick="openLightbox(this)" />
-    </div>
-    <!-- 复制更多 album-item 来添加图片 -->
-    <!-- 再重复一遍实现循环 -->
-    <div class="album-item">
-      <img src="https://res.cloudinary.com/dix4ngy25/image/upload/v1668068263/dgdocs/CleanShot_2022-11-10_at_09.17.28_2x.png" onclick="openLightbox(this)" />
-    </div>
-    <div class="album-item">
-      <img src="https://res.cloudinary.com/dix4ngy25/image/upload/v1668068103/dgdocs/CleanShot_2022-11-10_at_09.14.47_2x.png" onclick="openLightbox(this)" />
-    </div>
+  <div class="album-track" id="album-track">
+    <div class="album-item"><img src="https://res.cloudinary.com/ddirafvdx/image/upload/v1755602497/102990_rgshwe.jpg" onclick="openLightbox(this)"></div>
+    <div class="album-item"><img src="https://res.cloudinary.com/dix4ngy25/image/upload/v1668068103/dgdocs/CleanShot_2022-11-10_at_09.14.47_2x.png" onclick="openLightbox(this)"></div>
+    <!-- 可继续复制 album-item 添加更多图片 -->
   </div>
 </div>
 
@@ -39,17 +28,12 @@ yousbdh sjcnbv eee e  e xsdUbcso sfihj
   padding: 20px 0;
   background: #fcf4f2;
   border-radius: 15px;
-  position: relative;
 }
 
 .album-track {
   display: flex;
   gap: 15px;
-  animation: scroll-left 20s linear infinite;
-}
-
-.photo-album:hover .album-track {
-  animation-play-state: paused;
+  will-change: transform;
 }
 
 .album-item {
@@ -59,7 +43,7 @@ yousbdh sjcnbv eee e  e xsdUbcso sfihj
   overflow: hidden;
   transition: transform 0.3s, border 0.5s;
   border-image: linear-gradient(45deg, #ffb4a3, #fcf4f2, #0a2399) 1;
-  animation: fadeInUp 1s forwards;
+  animation: fadeInUp 0.8s forwards;
 }
 
 .album-item:hover {
@@ -77,10 +61,8 @@ yousbdh sjcnbv eee e  e xsdUbcso sfihj
 #lightbox {
   display: none;
   position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
+  top:0; left:0;
+  width:100%; height:100%;
   background: rgba(0,0,0,0.8);
   justify-content: center;
   align-items: center;
@@ -93,12 +75,6 @@ yousbdh sjcnbv eee e  e xsdUbcso sfihj
   border-radius: 12px;
 }
 
-/* 动画 */
-@keyframes scroll-left {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
 @keyframes fadeInUp {
   0% { opacity: 0; transform: translateY(20px); }
   100% { opacity: 1; transform: translateY(0); }
@@ -106,12 +82,38 @@ yousbdh sjcnbv eee e  e xsdUbcso sfihj
 </style>
 
 <script>
+// 无限循环滚动逻辑
+const track = document.getElementById('album-track');
+let speed = 0.5; // 滚动速度
+let paused = false;
+
+// 克隆所有子项，保证无缝循环
+track.innerHTML += track.innerHTML;
+
+function animate() {
+  if (!paused) {
+    track.scrollLeft += speed;
+    if (track.scrollLeft >= track.scrollWidth / 2) {
+      track.scrollLeft = 0;
+    }
+  }
+  requestAnimationFrame(animate);
+}
+
+track.addEventListener('mouseenter', () => paused = true);
+track.addEventListener('mouseleave', () => paused = false);
+
+animate();
+
+// 点击放大灯箱
 function openLightbox(img) {
   document.getElementById("lightbox").style.display = "flex";
   document.getElementById("lightbox-img").src = img.src;
 }
+
 function closeLightbox() {
   document.getElementById("lightbox").style.display = "none";
 }
 </script>
+
 
