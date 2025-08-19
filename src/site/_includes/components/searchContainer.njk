@@ -1,127 +1,23 @@
-<!-- 搜索触发按钮（可以放在导航栏或页面任意位置） -->
-<button type="button" id="open-search-btn" aria-label="打开搜索">🔍</button>
+<div class="search-container" id="globalsearch" onclick="toggleSearch()">
+    <div class="search-box">
+        <input type="search" id="term" placeholder="Start typing...">
+        <div id="search-results"></div>
+        <footer class="search-box-footer">
+            <div class="navigation-hint">
+                <span>Enter to select</span>
+            </div>
 
-<!-- 搜索容器 -->
-<form class="search-container" id="globalsearch" role="search" onsubmit="return false;">
-  <div class="search-box">
-    <!-- 关闭按钮 -->
-    <button type="button" class="close-search" aria-label="关闭搜索">✕</button>
+            <div class="navigation-hint align-icon">
+                <i  icon-name="arrow-up" aria-hidden="true"></i>
+                <i  icon-name="arrow-down" aria-hidden="true"></i>
+                <span>to navigate</span>
+            </div>
 
-    <!-- 搜索输入框 -->
-    <label for="term" class="sr-only">搜索</label>
-    <input 
-      type="search" 
-      id="term" 
-      name="q" 
-      placeholder="Start typing..." 
-      aria-label="搜索内容"
-      enterkeyhint="search"
-      autocomplete="off"
-    >
+            <div class="navigation-hint">
+                <span>ESC to close</span>
+            </div>
 
-    <!-- 搜索结果 -->
-    <div id="search-results"></div>
-
-    <!-- 操作提示 -->
-    <footer class="search-box-footer">
-      <div class="navigation-hint">
-        <span>Enter 搜索</span>
-      </div>
-      <div class="navigation-hint align-icon">
-        <i icon-name="arrow-up" aria-hidden="true"></i>
-        <i icon-name="arrow-down" aria-hidden="true"></i>
-        <span>上下移动</span>
-      </div>
-      <div class="navigation-hint">
-        <span>ESC / ✕ 关闭</span>
-      </div>
-    </footer>
-  </div>
-</form>
-
-{% include "components/searchScript.njk" %}
-
-<style>
-/* 搜索容器样式 */
-.search-container {
-  display: none;           /* 初始隐藏 */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  max-width: 100%;
-  background: #fff;
-  z-index: 9999;
-  padding: 0.5rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-}
-
-.search-box {
-  position: relative;
-}
-
-.search-container input[type="search"] {
-  font-size: 16px;     
-  padding: 0.75rem 1rem;
-  width: 100%;
-  border-radius: 0.5rem;
-  border: 1px solid #ddd;
-}
-
-.close-search {
-  position: absolute;
-  right: 0.75rem;
-  top: 0.75rem;
-  border: none;
-  background: none;
-  font-size: 1.25rem;
-  cursor: pointer;
-}
-
-#search-results {
-  max-height: 50vh;   
-  overflow-y: auto;
-  margin-top: 0.5rem;
-}
-
-.search-box-footer {
-  margin-top: 0.5rem;
-  font-size: 0.875rem;
-  color: #555;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-</style>
-
-<script>
-// 打开搜索
-const searchContainer = document.getElementById('globalsearch');
-const openBtn = document.getElementById('open-search-btn');
-const closeBtn = searchContainer.querySelector('.close-search');
-const searchInput = document.getElementById('term');
-
-openBtn.addEventListener('click', () => {
-  searchContainer.style.display = 'block';
-  searchInput.focus();
-});
-
-// 关闭搜索
-closeBtn.addEventListener('click', () => {
-  searchContainer.style.display = 'none';
-});
-
-// ESC 键关闭搜索
-document.addEventListener('keydown', (e) => {
-  if(e.key === 'Escape') {
-    searchContainer.style.display = 'none';
-  }
-});
-
-// 可选：点击空白处关闭搜索
-document.addEventListener('click', (e) => {
-  if(searchContainer.style.display === 'block' && !searchContainer.contains(e.target) && e.target !== openBtn) {
-    searchContainer.style.display = 'none';
-  }
-});
-</script>
+        </footer>
+    </div>
+</div>
+{%include "components/searchScript.njk"%}
