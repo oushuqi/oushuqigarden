@@ -12,12 +12,12 @@ yousbdh sjcnbv eee e  e xsdUbcso sfihj
 <div class="photo-album">
   <div class="album-track" id="album-track">
     <div class="album-item">
-      <img src="https://res.cloudinary.com/dix4ngy25/image/upload/v1668068263/dgdocs/CleanShot_2022-11-10_at_09.17.28_2x.png" onclick="openLightbox(this)" />
+      <img src="https://res.cloudinary.com/ddirafvdx/image/upload/v1755602497/Cypresses_xfr14q.jpg" onclick="openLightbox(this)" />
     </div>
     <div class="album-item">
-      <img src="https://res.cloudinary.com/ddirafvdx/image/upload/v1755602497/102193_a4oydx.jpg" onclick="openLightbox(this)" />
+      <img src="https://res.cloudinary.com/dix4ngy25/image/upload/v1668068103/dgdocs/CleanShot_2022-11-10_at_09.14.47_2x.png" onclick="openLightbox(this)" />
     </div>
-    <!-- 可以继续复制 album-item 添加更多图片 -->
+    <!-- 复制更多 album-item 来添加图片 -->
   </div>
 </div>
 
@@ -31,7 +31,7 @@ yousbdh sjcnbv eee e  e xsdUbcso sfihj
   overflow: hidden;
   padding: 20px 0;
   background: #fcf4f2;
-  border-radius: 15px;
+  border-radius: 10px;
   position: relative;
 }
 
@@ -41,30 +41,26 @@ yousbdh sjcnbv eee e  e xsdUbcso sfihj
   will-change: transform;
 }
 
-.album-track img {
-  opacity: 0;
-}
-
 .album-item {
   min-width: 200px;
-  border: 3px solid;
-  border-radius: 12px;
+  border: 3px solid #f9cdc2;
+  border-radius: 10px;
   overflow: hidden;
-  transition: transform 0.3s, border 0.5s;
-  border-image: linear-gradient(45deg, #ffb4a3, #fcf4f2, #0a2399) 1;
-  animation: slideIn 1s forwards;
+  transition: transform 0.3s, border-color 0.3s;
 }
 
 .album-item:hover {
-  transform: scale(1.08);
-  border-image: linear-gradient(45deg, #0a2399, #ffb4a3, #fcf4f2) 1;
+  transform: scale(1.05);
+  border-color: #0a2399;
 }
 
 .album-item img {
   width: 100%;
   display: block;
-  border-radius: 10px;
+  border-radius: 7px;
   cursor: pointer;
+  opacity: 0;
+  animation: fadeIn 1s forwards;
 }
 
 #lightbox {
@@ -83,12 +79,11 @@ yousbdh sjcnbv eee e  e xsdUbcso sfihj
 #lightbox img {
   max-width: 90%;
   max-height: 90%;
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
-@keyframes slideIn {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
+@keyframes fadeIn {
+  to { opacity: 1; }
 }
 </style>
 
@@ -104,6 +99,7 @@ track.innerHTML += track.innerHTML;
 function animate() {
   if (!paused) {
     track.scrollLeft += speed;
+    // 到达一半长度时重置 scrollLeft
     if (track.scrollLeft >= track.scrollWidth / 2) {
       track.scrollLeft = 0;
     }
@@ -113,6 +109,8 @@ function animate() {
 
 track.addEventListener('mouseenter', () => paused = true);
 track.addEventListener('mouseleave', () => paused = false);
+
+animate();
 
 // 点击放大灯箱
 function openLightbox(img) {
@@ -124,4 +122,3 @@ function closeLightbox() {
   document.getElementById("lightbox").style.display = "none";
 }
 </script>
-
