@@ -7,14 +7,19 @@
                 <a data-note-icon="{{fileOrFolder.noteIcon}}" style="text-decoration: none;" class="filename" href="{{fileOrFolder.permalink}}">{{fileOrFolder.name}}</a>
             </div>
         {% elif fileOrFolder.isFolder %}
-            <div x-data="{ isOpen: false, folders: [] }" class="folder inner-folder" x-ref="container">
-                <div class="foldername-wrapper align-icon"
-                     @click.stop="
-                        isOpen = !isOpen;
-                        // 仅折叠同级文件夹
-                        folders.forEach(f => { if(f !== $refs.folder) f.__x.$data.isOpen = false })
-                     "
-                     x-ref="folder">
+            <div class="folder inner-folder"
+                 x-data="{isOpen: false, step: {{step}}}"
+                 x-ref="folder"
+                 @click.stop="
+                    isOpen = !isOpen;
+                    // 仅折叠同级第一级文件夹
+                    if(step === 0){
+                        $el.parentElement.querySelectorAll('.inner-folder').forEach(f=>{
+                            if(f !== $el && f.__x) f.__x.$data.isOpen = false;
+                        })
+                    }
+                 ">
+                <div class="foldername-wrapper align-icon">
                     <i x-show="isOpen" style="display: none;" icon-name="chevron-down"></i>
                     <i x-show="!isOpen" icon-name="chevron-right"></i>
                     <span class="foldername">{{fileOrFolderName}}</span>
@@ -22,11 +27,6 @@
                 {% for fileOrFolderName, child in fileOrFolder %}
                     {{ menuItem(fileOrFolderName, child, step+1, (currentPath+"/"+fileOrFolderName)) }}
                 {% endfor %}
-                <script>
-                    // 把所有直接子文件夹加入 folders
-                    let container = document.currentScript.previousElementSibling;
-                    container.__x.folders = Array.from(container.querySelectorAll(':scope > .inner-folder'));
-                </script>
             </div>
         {% endif %}
     </div>
