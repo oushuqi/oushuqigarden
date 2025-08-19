@@ -7,18 +7,14 @@
                 <a data-note-icon="{{fileOrFolder.noteIcon}}" style="text-decoration: none;" class="filename" href="{{fileOrFolder.permalink}}">{{fileOrFolder.name}}</a>
             </div>
         {% elif fileOrFolder.isFolder %}
-            <div class="folder inner-folder"
-                 x-data="{isOpen: false, step: {{step}}}"
-                 x-ref="folder"
-                 @click.stop="
-                    // 切换自身展开状态
-                    isOpen = !isOpen;
-                    // 折叠同级其他文件夹
-                    $el.parentElement.querySelectorAll('.inner-folder').forEach(f=>{
-                        if(f !== $el && f.__x) f.__x.$data.isOpen = false;
-                    })
-                 ">
-                <div class="foldername-wrapper align-icon">
+            <div x-data="{ isOpen: false, folders: [] }" class="folder inner-folder" x-ref="container">
+                <div class="foldername-wrapper align-icon"
+                     @click.stop="
+                        isOpen = !isOpen;
+                        // 仅折叠同级文件夹
+                        folders.forEach(f => { if(f !== $refs.folder) f.__x.$data.isOpen = false })
+                     "
+                     x-ref="folder">
                     <i x-show="isOpen" style="display: none;" icon-name="chevron-down"></i>
                     <i x-show="!isOpen" icon-name="chevron-right"></i>
                     <span class="foldername">{{fileOrFolderName}}</span>
@@ -26,11 +22,17 @@
                 {% for fileOrFolderName, child in fileOrFolder %}
                     {{ menuItem(fileOrFolderName, child, step+1, (currentPath+"/"+fileOrFolderName)) }}
                 {% endfor %}
+                <script>
+                    // 把所有直接子文件夹加入 folders
+                    let container = document.currentScript.previousElementSibling;
+                    container.__x.folders = Array.from(container.querySelectorAll(':scope > .inner-folder'));
+                </script>
             </div>
         {% endif %}
     </div>
 {% endif %}
 {% endmacro %}
+
     
     <div x-init="isDesktop = (window.innerWidth>=1400) ? true: false;" 
             x-on:resize.window="isDesktop = (window.innerWidth>=1400) ? true : false;" 
