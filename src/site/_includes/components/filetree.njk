@@ -8,12 +8,12 @@
             </div>
         {% elif fileOrFolder.isFolder %}
             <div class="folder inner-folder"
-                 x-data="{isOpen: $persist(false).as('{{currentPath}}'), step: {{step}}}"
+                 x-data="{isOpen: false, step: {{step}}}"
                  x-ref="folder"
-                 @click="
+                 @click.stop="
                     isOpen = !isOpen;
-                    // 仅折叠同级第一级文件夹
-                    if(step === 0){
+                    // 第一级文件夹单展开
+                    if(step === 0 && isOpen){
                         $el.parentElement.querySelectorAll('.inner-folder').forEach(f=>{
                             if(f !== $el && f.__x) f.__x.$data.isOpen = false;
                         })
@@ -37,14 +37,14 @@
      x-on:resize.window="isDesktop = (window.innerWidth>=1400) ? true : false;" 
      x-data="{isDesktop: true, showFilesMobile: false}">
 
-    <!-- 移动端顶部按钮 -->
+    <!-- 移动端文件树按钮 -->
     <div x-show.important="!isDesktop" style="display: none;">
         {% include "components/filetreeNavbar.njk" %}
     </div>
 
     <div x-show="showFilesMobile && !isDesktop" @click="showFilesMobile = false" style="display:none;" class="fullpage-overlay"></div>
 
-    <!-- 左侧文件树 -->
+    <!-- 左侧导航栏 -->
     <nav class="filetree-sidebar" x-show.important="isDesktop || showFilesMobile" style="display: none;">
         {% for imp in dynamics.filetree.beforeTitle %}
             {% include imp %}
@@ -62,7 +62,7 @@
         {% endif %}
 
         <!-- 根目录 -->
-        <div class="folder" x-data="{isOpen: true}">
+        <div class="folder">
             {%- for fileOrFolderName, fileOrFolder in filetree -%}
                 {{ menuItem(fileOrFolderName, fileOrFolder, 0, fileOrFolderName) }}
             {%- endfor -%}
