@@ -10,11 +10,15 @@
                 <div class="folder inner-folder"
                      x-data="{isOpen: $persist(false).as('{{currentPath}}')}"
                      @click.stop="
-                        // 切换自己展开状态
                         isOpen = !isOpen;
-                        // 折叠同一级其他文件夹（不影响子文件夹）
+                        // 折叠同级其他文件夹及其子级
                         $el.parentElement.querySelectorAll('.inner-folder').forEach(f=>{
-                          if(f !== $el) f.__x.$data.isOpen = false
+                            if(f !== $el){
+                                f.__x.$data.isOpen = false;
+                                f.querySelectorAll('.inner-folder').forEach(sub=>{
+                                    sub.__x.$data.isOpen = false;
+                                })
+                            }
                         })
                      ">
                     <div class="foldername-wrapper align-icon">
