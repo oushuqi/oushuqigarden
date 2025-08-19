@@ -24,12 +24,26 @@ permalink: "notes/{{ page.fileSlug | slugify }}/"
         {fileSlug: 'note-3', permalink: '/notes/note-3/', title: '笔记三'}
       ] %}
 
-      {# 找到当前笔记在目录中的索引 #}
-      {% set index = allNotes | findIndex(note => note.fileSlug == page.fileSlug) %}
+      {# 用 Nunjucks 循环查找当前笔记索引 #}
+      {% set index = -1 %}
+      {% for n in allNotes %}
+        {% if n.fileSlug == page.fileSlug %}
+          {% set index = loop.index0 %}
+        {% endif %}
+      {% endfor %}
 
       {# 获取上一篇 / 下一篇 #}
-      {% set previousNote = index > 0 ? allNotes[index - 1] : null %}
-      {% set nextNote = index < allNotes | length - 1 ? allNotes[index + 1] : null %}
+      {% if index > 0 %}
+        {% set previousNote = allNotes[index - 1] %}
+      {% else %}
+        {% set previousNote = null %}
+      {% endif %}
+
+      {% if index >= 0 and index < allNotes | length - 1 %}
+        {% set nextNote = allNotes[index + 1] %}
+      {% else %}
+        {% set nextNote = null %}
+      {% endif %}
 
       {# 渲染导航 #}
       {% if previousNote or nextNote %}
