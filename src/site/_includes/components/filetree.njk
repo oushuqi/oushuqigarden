@@ -9,13 +9,12 @@
             {% elif fileOrFolder.isFolder %}
                 <div class="folder inner-folder"
                      x-data="{isOpen: $persist(false).as('{{currentPath}}')}"
+                     x-ref="folder"
                      @click.stop="
                         isOpen = !isOpen;
-                        // 折叠同级其他文件夹
-                        $el.parentElement.querySelectorAll(':scope > .inner-folder').forEach(f=>{
-                            if(f !== $el){
-                                f.__x.$data.isOpen = false;
-                            }
+                        // 折叠同级文件夹
+                        $el.parentElement.querySelectorAll('.inner-folder').forEach(f=>{
+                            if(f !== $el && f.__x) f.__x.$data.isOpen = false
                         })
                      ">
                     <div class="foldername-wrapper align-icon">
