@@ -7,14 +7,15 @@
                     <a data-note-icon="{{fileOrFolder.noteIcon}}" style="text-decoration: none;" class="filename" href="{{fileOrFolder.permalink}}">{{fileOrFolder.name}}</a>
                 </div>
             {% elif fileOrFolder.isFolder %}
-                <div class="folder inner-folder"
+                <div class="folder inner-folder"  
                      x-data="{isOpen: $persist(false).as('{{currentPath}}')}"
                      @click.stop="
                         isOpen = !isOpen;
-                        // 折叠同级其他文件夹及其子级
+                        // 折叠同级其他文件夹
                         $el.parentElement.querySelectorAll('.inner-folder').forEach(f=>{
                             if(f !== $el){
                                 f.__x.$data.isOpen = false;
+                                // 同时折叠子级
                                 f.querySelectorAll('.inner-folder').forEach(sub=>{
                                     sub.__x.$data.isOpen = false;
                                 })
