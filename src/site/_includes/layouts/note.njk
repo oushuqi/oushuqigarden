@@ -5,7 +5,7 @@ permalink: "notes/{{ page.fileSlug | slugify }}/"
 <html lang="{{ meta.mainLanguage }}">
   <head>
     <title>{% if title %}{{ title }}{% else %}{{ page.fileSlug }}{% endif %}</title>
-    {%include "components/pageheader.njk"%}
+    {% include "components/pageheader.njk" %}
     {% for imp in dynamics.common.head %}
       {% include imp %}
     {% endfor %}
@@ -14,31 +14,31 @@ permalink: "notes/{{ page.fileSlug | slugify }}/"
     {% endfor %}
   </head>
   <body class="theme-{{meta.baseTheme}} markdown-preview-view markdown-rendered markdown-preview-section {{meta.bodyClasses}}">
-    {%include "components/notegrowthhistory.njk"%}
-    
+    {% include "components/notegrowthhistory.njk" %}
+
     {% if settings.dgShowFileTree !== true %}
-      {%include "components/navbar.njk"%}
-    {%else%}
-      {%include "components/filetree.njk"%}
+      {% include "components/navbar.njk" %}
+    {% else %}
+      {% include "components/filetree.njk" %}
     {% endif %}
 
     {% if settings.dgEnableSearch === true %}
-      {%include "components/searchContainer.njk"%}
+      {% include "components/searchContainer.njk" %}
     {% endif %}
 
     <main class="content cm-s-obsidian {{contentClasses}}">
       <header>
         {% if settings.dgShowInlineTitle === true %}
-          <h1 data-note-icon="{% if noteIcon %}{{noteIcon}}{% else %}{{meta.noteIconsSettings.default}}{% endif %}">{% if title %}{{ title }}{% else %}{{ page.fileSlug }}{% endif %}</h1>
+          <h1 data-note-icon="{% if noteIcon %}{{noteIcon}}{% else %}{{meta.noteIconsSettings.default}}{% endif %}">
+            {% if title %}{{ title }}{% else %}{{ page.fileSlug }}{% endif %}
+          </h1>
         {% endif %}
         <div class="header-meta">
           {% if settings.dgShowTags === true and tags %}
             <div class="header-tags">
               {% for tag in tags %}
                 {% if tag != 'gardenEntry' and tag !='note' %}
-                  <a class="tag" onclick="toggleTagSearch(this)">
-                    #{{tag}}
-                  </a>
+                  <a class="tag" onclick="toggleTagSearch(this)">#{{tag}}</a>
                 {% endif %}
               {% endfor %}
             </div>
@@ -61,13 +61,17 @@ permalink: "notes/{{ page.fileSlug | slugify }}/"
         {% include imp %}
       {% endfor %}
       </header>
+
       {% for imp in dynamics.common.beforeContent %}
         {% include imp %}
       {% endfor %}
       {% for imp in dynamics.notes.beforeContent %}
         {% include imp %}
       {% endfor %}
-      {{ content | hideDataview | taggify | link | safe}}
+
+      <!-- 正文内容 -->
+      {{ content | hideDataview | taggify | link | safe }}
+
       {% for imp in dynamics.common.afterContent %}
         {% include imp %}
       {% endfor %}
@@ -75,40 +79,61 @@ permalink: "notes/{{ page.fileSlug | slugify }}/"
         {% include imp %}
       {% endfor %}
 
-      {{ content | hideDataview | taggify | link | safe }}
-{% comment %} 上下篇导航 {% endcomment %}
-{% if previousNote or nextNote %}
-  <nav class="note-navigation">
-    {% if previousNote %}
-      <a href="{{ previousNote.permalink }}" class="prev-note">← 上一篇: {{ previousNote.title }}</a>
-    {% else %}
-      <span></span>
-    {% endif %}
-    {% if nextNote %}
-      <a href="{{ nextNote.permalink }}" class="next-note">下一篇: {{ nextNote.title }} →</a>
-    {% else %}
-      <span></span>
-    {% endif %}
-  </nav>
-{% endif %}
+      <!-- 上下篇导航 -->
+      {% if previousNote or nextNote %}
+        <nav class="note-navigation">
+          {% if previousNote %}
+            <a href="{{ previousNote.permalink }}" class="prev-note">← 上一篇: {{ previousNote.title }}</a>
+          {% else %}
+            <span></span>
+          {% endif %}
+          {% if nextNote %}
+            <a href="{{ nextNote.permalink }}" class="next-note">下一篇: {{ nextNote.title }} →</a>
+          {% else %}
+            <span></span>
+          {% endif %}
+        </nav>
+      {% endif %}
 
     </main>
 
-    {% if settings.dgShowBacklinks === true or settings.dgShowLocalGraph === true or settings.dgShowToc === true%}
-      {%include "components/sidebar.njk"%}
+    {% if settings.dgShowBacklinks === true or settings.dgShowLocalGraph === true or settings.dgShowToc === true %}
+      {% include "components/sidebar.njk" %}
     {% endif %}
 
     {% if settings.dgLinkPreview === true %}
-      {%include "components/linkPreview.njk"%}
+      {% include "components/linkPreview.njk" %}
     {% endif %}
+
     {% include "components/references.njk" %}
     {% include "components/timestamps.njk" %}
+
     {% for imp in dynamics.common.footer %}
       {% include imp %}
     {% endfor %}
     {% for imp in dynamics.notes.footer %}
       {% include imp %}
     {% endfor %}
-    {%include "components/lucideIcons.njk"%}
+    {% include "components/lucideIcons.njk" %}
+
+    <style>
+    /* 上下篇导航样式 */
+    .note-navigation {
+      display: flex;
+      justify-content: space-between;
+      margin: 2rem 0;
+      padding: 1rem;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+    }
+    .note-navigation a {
+      text-decoration: none;
+      color: #0077cc;
+      font-weight: 500;
+    }
+    .note-navigation a:hover {
+      text-decoration: underline;
+    }
+    </style>
   </body>
 </html>
