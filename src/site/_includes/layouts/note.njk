@@ -5,82 +5,92 @@ permalink: "notes/{{ page.fileSlug | slugify }}/"
 <html lang="{{ meta.mainLanguage }}">
   <head>
     <title>{% if title %}{{ title }}{% else %}{{ page.fileSlug }}{% endif %}</title>
-    {% include "components/pageheader.njk" %}
+    {%include "components/pageheader.njk"%}
+    {% for imp in dynamics.common.head %}
+      {% include imp %}
+    {% endfor %}
+    {% for imp in dynamics.notes.head %}
+      {% include imp %}
+    {% endfor %}
   </head>
   <body class="theme-{{meta.baseTheme}} markdown-preview-view markdown-rendered markdown-preview-section {{meta.bodyClasses}}">
+    {%include "components/notegrowthhistory.njk"%}
     
-    {% include "components/notegrowthhistory.njk" %}
-    {% include "components/navbar.njk" %}
+    {% if settings.dgShowFileTree !== true %}
+      {%include "components/navbar.njk"%}
+    {%else%}
+      {%include "components/filetree.njk"%}
+    {% endif %}
+
+    {% if settings.dgEnableSearch === true %}
+      {%include "components/searchContainer.njk"%}
+    {% endif %}
 
     <main class="content cm-s-obsidian {{contentClasses}}">
-      {{ content | hideDataview | taggify | link | safe }}
-
-      {# ------------------- 上下篇导航 ------------------- #}
-
-      {# 假数据，模拟左侧目录顺序 #}
-      {% set allNotes = [
-        {fileSlug: 'note-1', permalink: '/notes/note-1/', title: '笔记一'},
-        {fileSlug: 'note-2', permalink: '/notes/note-2/', title: '笔记二'},
-        {fileSlug: 'note-3', permalink: '/notes/note-3/', title: '笔记三'}
-      ] %}
-
-      {# 用 Nunjucks 循环查找当前笔记索引 #}
-      {% set index = -1 %}
-      {% for n in allNotes %}
-        {% if n.fileSlug == page.fileSlug %}
-          {% set index = loop.index0 %}
+      <header>
+        {% if settings.dgShowInlineTitle === true %}
+          <h1 data-note-icon="{% if noteIcon %}{{noteIcon}}{% else %}{{meta.noteIconsSettings.default}}{% endif %}">{% if title %}{{ title }}{% else %}{{ page.fileSlug }}{% endif %}</h1>
         {% endif %}
+        <div class="header-meta">
+          {% if settings.dgShowTags === true and tags %}
+            <div class="header-tags">
+              {% for tag in tags %}
+                {% if tag != 'gardenEntry' and tag !='note' %}
+                  <a class="tag" onclick="toggleTagSearch(this)">
+                    #{{tag}}
+                  </a>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+          {%- if meta.timestampSettings.showCreated or meta.timestampSettings.showUpdated -%}
+          <div class="timestamps">
+            {%- if meta.timestampSettings.showCreated and created -%}
+            <div><i icon-name="calendar-plus"></i> <span class="human-date" data-date="{{created}}"></span></div>
+            {%- endif -%}
+            {%- if meta.timestampSettings.showUpdated and updated -%}
+            <div><i icon-name="calendar-clock"></i> <span class="human-date" data-date="{{updated}}"></span></div>
+            {%- endif -%}
+          </div>
+          {%- endif -%}
+        </div>
+      {% for imp in dynamics.common.header %}
+        {% include imp %}
       {% endfor %}
-
-      {# 获取上一篇 / 下一篇 #}
-      {% if index > 0 %}
-        {% set previousNote = allNotes[index - 1] %}
-      {% else %}
-        {% set previousNote = null %}
-      {% endif %}
-
-      {% if index >= 0 and index < allNotes | length - 1 %}
-        {% set nextNote = allNotes[index + 1] %}
-      {% else %}
-        {% set nextNote = null %}
-      {% endif %}
-
-      {# 渲染导航 #}
-      {% if previousNote or nextNote %}
-        <nav class="note-navigation">
-          {% if previousNote %}
-            <a href="{{ previousNote.permalink }}" class="prev-note">← 上一篇: {{ previousNote.title }}</a>
-          {% else %}
-            <span></span>
-          {% endif %}
-          {% if nextNote %}
-            <a href="{{ nextNote.permalink }}" class="next-note">下一篇: {{ nextNote.title }} →</a>
-          {% else %}
-            <span></span>
-          {% endif %}
-        </nav>
-      {% endif %}
-
+      {% for imp in dynamics.notes.header %}
+        {% include imp %}
+      {% endfor %}
+      </header>
+      {% for imp in dynamics.common.beforeContent %}
+        {% include imp %}
+      {% endfor %}
+      {% for imp in dynamics.notes.beforeContent %}
+        {% include imp %}
+      {% endfor %}
+      {{ content | hideDataview | taggify | link | safe}}
+      {% for imp in dynamics.common.afterContent %}
+        {% include imp %}
+      {% endfor %}
+      {% for imp in dynamics.notes.afterContent %}
+        {% include imp %}
+      {% endfor %}
     </main>
 
-    <style>
-      .note-navigation {
-        display: flex;
-        justify-content: space-between;
-        margin: 2rem 0;
-        padding: 1rem;
-        border-top: 1px solid #eee;
-        border-bottom: 1px solid #eee;
-      }
-      .note-navigation a {
-        text-decoration: none;
-        color: #0077cc;
-        font-weight: 500;
-      }
-      .note-navigation a:hover {
-        text-decoration: underline;
-      }
-    </style>
+    {% if settings.dgShowBacklinks === true or settings.dgShowLocalGraph === true or settings.dgShowToc === true%}
+      {%include "components/sidebar.njk"%}
+    {% endif %}
 
+    {% if settings.dgLinkPreview === true %}
+      {%include "components/linkPreview.njk"%}
+    {% endif %}
+    {% include "components/references.njk" %}
+    {% include "components/timestamps.njk" %}
+    {% for imp in dynamics.common.footer %}
+      {% include imp %}
+    {% endfor %}
+    {% for imp in dynamics.notes.footer %}
+      {% include imp %}
+    {% endfor %}
+    {%include "components/lucideIcons.njk"%}
   </body>
 </html>
