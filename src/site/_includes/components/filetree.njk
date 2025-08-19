@@ -7,20 +7,14 @@
                     <a data-note-icon="{{fileOrFolder.noteIcon}}" style="text-decoration: none;" class="filename" href="{{fileOrFolder.permalink}}">{{fileOrFolder.name}}</a>
                 </div>
             {% elif fileOrFolder.isFolder %}
-                <div class="folder inner-folder"
+                <div class="folder inner-folder"  
                      x-data="{isOpen: $persist(false).as('{{currentPath}}')}"
                      @click.stop="
-                        // 切换自己展开状态
-                        isOpen = !isOpen;
-                        // 折叠同级其他文件夹及其所有子级
-                        $el.parentElement.querySelectorAll(':scope > .inner-folder').forEach(f=>{
-                            if(f !== $el){
-                                f.__x.$data.isOpen = false;
-                                f.querySelectorAll('.inner-folder').forEach(sub=>{
-                                    sub.__x.$data.isOpen = false;
-                                })
-                            }
-                        })
+                        isOpen = !isOpen; 
+                        if(isOpen) $dispatch('collapse-all-except', '{{currentPath}}')
+                     "
+                     @collapse-all-except.window="
+                        if($event.detail !== '{{currentPath}}') isOpen = false
                      ">
                     <div class="foldername-wrapper align-icon">
                         <i x-show="isOpen" style="display: none;" icon-name="chevron-down"></i>
