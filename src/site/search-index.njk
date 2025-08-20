@@ -2,15 +2,12 @@
 permalink: /searchIndex.json
 eleventyExcludeFromCollections: true
 ---
-
-[
-{% for post in collections.note %}
-  {
-    "title": {{ post.data.title | default(post.fileSlug) | jsonify }},
-    "date": "{{ post.date }}",
-    "url": "{{ post.url }}",
-    "content": {{ post.templateContent | striptags(true) | jsonify }},
-    "tags": {{ (post.data.tags or []) | jsonify }}
-  }{% if not loop.last %},{% endif %}
-{% endfor %}
-]
+[{% for post in collections.note %}
+{
+		"title": {% if post.data.title %}{{post.data.title | jsonify | safe }}{% else %}{{post.fileSlug | jsonify | safe }}{% endif %},
+		"date":"{{ post.date }}",
+		"url":"{{ post.url }}",
+		"content": {{ post.templateContent | striptags(true) | jsonify | safe  }},
+		"tags": [{{post.templateContent | safe }} {% if post.data.tags %}{% for tag in post.data.tags %}"{{tag|validJson}}"{% if not loop.last %},{% endif %}{% endfor %}{% endif %}]
+}{% if not loop.last %},{% endif %}
+{% endfor %}]
