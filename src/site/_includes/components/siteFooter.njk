@@ -6,25 +6,34 @@
 </footer>
 
 <style>
-  /* Footer固定在底部，背景透明 */
+  /* 让footer粘底 */
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+  main {
+    flex: 1 0 auto; /* 主内容撑开高度 */
+  }
   .poem-footer {
-    position: relative;
+    flex-shrink: 0;
     width: 100%;
     text-align: center;
     font-family: "Source Han Serif","思源宋体",serif;
     font-style: italic;
     font-size: 16px;
-    color: #222; /* 深色字体，适合任何背景 */
-    padding: 15px 0;
+    color: #222;
+    padding: 10px 0;
+    position: relative;
     overflow: hidden;
   }
-
   .poem-line {
     position: relative;
     z-index: 2;
   }
-
-  /* 星星容器 */
   #star-container {
     position: absolute;
     top: 0;
@@ -35,7 +44,6 @@
     overflow: visible;
     z-index: 1;
   }
-
   /* 掉落星星 */
   .star {
     position: absolute;
@@ -47,14 +55,12 @@
     opacity: 0.9;
     animation: fall linear;
   }
-
   @keyframes fall {
     to {
       transform: translateY(100px);
       opacity: 0;
     }
   }
-
   /* 流星 */
   .shooting-star {
     position: absolute;
@@ -65,10 +71,9 @@
     transform: rotate(45deg);
     animation: shooting 1s linear forwards;
   }
-
   @keyframes shooting {
     0% { transform: translate(0,0) rotate(45deg); opacity: 1; }
-    100% { transform: translate(300px, 300px) rotate(45deg); opacity: 0; }
+    100% { transform: translate(300px,300px) rotate(45deg); opacity: 0; }
   }
 </style>
 
