@@ -4,25 +4,23 @@ eleventyExcludeFromCollections: true
 ---
 [
 {% for post in collections.note %}
-  {% set rawContent = post.templateContent | striptags(true) | trim %}
-  {% set truncated = rawContent | slice(0, 100) | trim %}
-
-  {% if rawContent | length > truncated | length %}
-    {% set truncated = truncated ~ "…" %}
-  {% endif %}
-
   {
     "title": {{ (post.data.title or post.fileSlug) | jsonify | safe }},
     "date": "{{ post.date }}",
     "url": "{{ post.url }}",
-    "content": {{ truncated | link | jsonify | safe }},
+    "content": {{ post.templateContent 
+                  | striptags(true) 
+                  | slice(0, 100)  /* 截取前100字符 */
+                  | link 
+                  | jsonify 
+                  | safe }},
     "tags": [
       {% set tags = [] %}
       {% set tags = tags.concat(post.templateContent | link | searchableTags | safe | split(",")) %}
       {% if post.data.tags %}
         {% set tags = tags.concat(post.data.tags) %}
       {% endif %}
-      {% set tags = tags | reject("equalto", "") %}
+      {% set tags = tags | reject("equalto", "") %}  {# 去掉空标签 #}
       {% for tag in tags %}
         "{{ tag | validJson }}" {% if not loop.last %},{% endif %}
       {% endfor %}
