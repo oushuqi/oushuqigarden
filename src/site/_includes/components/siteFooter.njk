@@ -1,126 +1,48 @@
-<footer class="interactive-footer">
-  <canvas id="particle-canvas"></canvas>
-  <div id="star-container"></div>
-  <div class="footer-hint">✨ 点击任意位置，看彩色流星划过 ✨</div>
+<footer class="fixed-footer">
+  <div class="footer-content">
+    <span>© {{ new Date().getFullYear() }} {{ meta.siteName }}. All rights reserved.</span>
+    <span style="margin-left: 20px;">Powered by YourSite</span>
+  </div>
 </footer>
 
 <style>
-html, body { height:100%; margin:0; }
-body { display:flex; flex-direction:column; }
-main { flex:1 0 auto; }
-
-.interactive-footer {
-  position: relative;
-  width:100%;
-  height:80px;
-  overflow:hidden;
-  flex-shrink:0;
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
-.footer-hint {
-  position:absolute; right:10px; bottom:5px;
-  font-size:12px; font-family:"Source Han Serif","思源宋体",serif;
-  color:#444; opacity:0.7; pointer-events:none;
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-#star-container {
-  position:absolute; top:0; left:0; width:100%; height:100%;
-  pointer-events:none; overflow:visible; z-index:2;
+/* 主体撑满剩余空间 */
+main {
+  flex: 1 0 auto;
 }
 
-.star {
-  position:absolute; top:-5px; width:4px; height:4px;
-  background:gold; border-radius:50%; opacity:0.8;
-  animation:fall linear;
+/* 固定底部 footer */
+.fixed-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-family: "Source Han Serif","思源宋体",serif;
+  font-size: 14px;
+  color: #555;
+  padding: 10px 0;
+  z-index: 1000; /* 确保不被侧边栏覆盖 */
+  background: transparent;
 }
-@keyframes fall { to { transform:translateY(80px); opacity:0; } }
 
-#particle-canvas {
-  position:absolute; top:0; left:0;
-  width:100%; height:100%;
-  z-index:1; pointer-events:none;
-}
-</style>
-
-<script>
-const starContainer = document.getElementById("star-container");
-
-// 掉落星星
-function createStar() {
-  const star = document.createElement("div");
-  star.classList.add("star");
-  star.style.left = Math.random() * window.innerWidth + "px";
-  star.style.animationDuration = (1.5 + Math.random()*1.5) + "s";
-  starContainer.appendChild(star);
-  setTimeout(()=>star.remove(),4000);
-}
-setInterval(createStar,250);
-
-// 点击生成彩色流星
-document.addEventListener("click", (e) => {
-  const shootingStar = document.createElement("canvas");
-  shootingStar.width = 100;
-  shootingStar.height = 4;
-  shootingStar.style.position = "fixed";
-  shootingStar.style.left = e.clientX + "px";
-  shootingStar.style.top = e.clientY + "px";
-  shootingStar.style.zIndex = 9999;
-  document.body.appendChild(shootingStar);
-
-  const ctx = shootingStar.getContext("2d");
-  const gradient = ctx.createLinearGradient(0,0,100,0);
-  gradient.addColorStop(0,'#ffeb3b');
-  gradient.addColorStop(0.3,'#ff5722');
-  gradient.addColorStop(1,'rgba(255,87,34,0)');
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0,0,100,4);
-
-  let posX = 0, posY = 0;
-  const anim = setInterval(()=>{
-    posX += 15;
-    posY -= 10;
-    shootingStar.style.transform = `translate(${posX}px,${posY}px) rotate(45deg)`;
-    shootingStar.style.opacity -= 0.02;
-    if(posX>300){ 
-      clearInterval(anim); 
-      shootingStar.remove();
-    }
-  },16);
-});
-
-// 粒子效果
-const canvas = document.getElementById("particle-canvas");
-const ctx = canvas.getContext("2d");
-let particles = [];
-function resizeCanvas() { canvas.width=window.innerWidth; canvas.height=80; }
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-
-function createParticles(){
-  particles=[];
-  for(let i=0;i<50;i++){
-    particles.push({
-      x:Math.random()*canvas.width,
-      y:Math.random()*canvas.height,
-      size:Math.random()*2+1,
-      speed:Math.random()*0.5+0.2,
-      alpha:Math.random()*0.5+0.3
-    });
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .fixed-footer {
+    font-size: 12px;
+    padding: 8px 0;
   }
 }
-createParticles();
-
-function drawParticles(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  particles.forEach(p=>{
-    ctx.fillStyle="rgba(255,255,255,"+p.alpha+")";
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
-    ctx.fill();
-    p.y+=p.speed;
-    if(p.y>canvas.height){ p.y=0; p.x=Math.random()*canvas.width; }
-  });
-  requestAnimationFrame(drawParticles);
-}
-drawParticles();
-</script>
+</style>
