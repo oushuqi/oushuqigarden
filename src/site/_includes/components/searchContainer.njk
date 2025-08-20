@@ -1,3 +1,17 @@
+<div class="search-container">
+  <input type="text" id="searchInput" placeholder="搜索笔记..." autocomplete="off">
+  <div id="searchResults"></div>
+</div>
+
+<style>
+  .search-container { position: relative; margin: 20px 0; }
+  #searchInput { width: 100%; padding: 8px; font-size: 16px; }
+  #searchResults { margin-top: 5px; }
+  .search-result { padding: 6px 10px; border-bottom: 1px solid #ddd; }
+  .search-result a { text-decoration: none; color: #0077cc; }
+  .search-result mark { background: yellow; color: black; }
+</style>
+
 <div class="search-container" id="globalsearch" onclick="toggleSearch()">
     <div class="search-box">
         <input type="search" id="term" placeholder="Start typing...">
