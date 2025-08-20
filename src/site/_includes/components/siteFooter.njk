@@ -1,8 +1,7 @@
 {# src/site/_includes/components/siteFooter.njk #}
 <footer class="fixed-footer">
   <div class="footer-content">
-    <span>© 2025 {{ meta.siteName }}. All rights reserved.</span>
-    <span style="margin-left: 20px;">Powered by YourSite</span>
+    <img src="site/img/user/catwave.gif" alt="动态小猫" class="cat-gif">
   </div>
 </footer>
 
@@ -30,28 +29,37 @@ main {
   bottom: 0;
   left: 0;
   width: 100%;
-  text-align: center;
-  font-family: "Source Han Serif","思源宋体",serif;
-  font-size: 14px;
-  color: #555;
-  padding: 10px 0;
-  z-index: 1000; /* 保证不被侧边栏覆盖 */
+  height: 80px; /* 可根据gif大小调整 */
+  z-index: 1000;
   background: transparent;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 20px;
   pointer-events: auto;
-  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-/* 悬停动画：轻微上浮 + 透明度变化 */
-.fixed-footer:hover {
-  transform: translateY(-2px);
-  opacity: 0.9;
+/* 小猫 GIF 样式 */
+.cat-gif {
+  height: 60px; /* 根据需要调整大小 */
+  width: auto;
+  animation: float 2s ease-in-out infinite;
+}
+
+/* 悬浮动画 */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
 }
 
 /* 移动端适配 */
 @media (max-width: 768px) {
   .fixed-footer {
-    font-size: 12px;
-    padding: 8px 0;
+    height: 60px;
+    padding: 0 10px;
+  }
+  .cat-gif {
+    height: 40px;
   }
 }
 </style>
