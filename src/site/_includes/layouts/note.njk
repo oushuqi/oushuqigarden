@@ -76,6 +76,8 @@ permalink: "notes/{{ page.fileSlug | slugify }}/"
       {% endfor %}
     </main>
 
+    {% include "components/siteFooter.njk"%}
+
     {% if settings.dgShowBacklinks === true or settings.dgShowLocalGraph === true or settings.dgShowToc === true%}
       {%include "components/sidebar.njk"%}
     {% endif %}
