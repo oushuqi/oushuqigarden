@@ -1,33 +1,44 @@
 /* 去掉首页标题上方空白 */
 body, main, .content, .site-header, .page-title {
-    margin-top: 1 !important;
-    padding-top: 1 !important;
+    margin-top: 5px !important;
+    padding-top: 5px !important;
 }
 
 /* 如果 h1 在某个特殊容器里，也一起覆盖 */
 h1 {
-    margin-top: 1 !important;
+    margin-top: 5px !important;
 }
 
-/* 左侧文件树悬停彩虹动画 */
+/* 左侧文件树悬停高级彩虹动画 */
 .filetree-sidebar .foldername-wrapper:hover,
 .filetree-sidebar .notelink:hover {
     background: linear-gradient(
         90deg,
         #ff0000,
+        #ff4500,
         #ff7f00,
         #ffff00,
         #00ff00,
+        #00ced1,
         #0000ff,
         #4b0082,
         #8f00ff,
+        #ff1493,
         #ff0000
     );
     background-size: 300% 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: rainbow-slide 3s linear infinite;
-    transition: all 0.5s ease;
+
+    /* 动画效果 */
+    animation: rainbow-slide 5s ease-in-out infinite alternate;
+
+    /* 文字阴影，让彩虹更醒目 */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+
+    /* 缓慢过渡，增加放大感 */
+    transition: all 0.3s ease;
+    transform: scale(1.05);
 }
 
 /* 动画关键帧 */
@@ -39,73 +50,3 @@ h1 {
         background-position: 100% 0%;
     }
 }
-
-/* --------------------------
-   文件夹高亮和平滑展开动画
--------------------------- */
-
-/* 文件夹整体过渡动画 */
-.folder.inner-folder > .foldername-wrapper {
-    transition: background-color 0.3s, color 0.3s;
-    padding: 4px 8px; /* 可根据需要调整内边距 */
-    border-radius: 4px;
-}
-
-/* 高亮展开文件夹 */
-.folder.inner-folder.active-folder > .foldername-wrapper,
-.folder.inner-folder[x-data][x-data*="isOpen: true"] > .foldername-wrapper {
-    background-color: #e0f7fa; /* 高亮颜色，可自定义 */
-    color: #006064; /* 高亮字体颜色，可自定义 */
-}
-
-/* 鼠标悬停也高亮 */
-.folder.inner-folder > .foldername-wrapper:hover {
-    background-color: #b2ebf2;
-}
-
-/* 文件夹图标过渡 */
-.folder.inner-folder i {
-    transition: transform 0.3s;
-}
-
-/* 展开时图标旋转 */
-.folder.inner-folder[x-data][x-data*="isOpen: true"] i[icon-name="chevron-down"] {
-    transform: rotate(0deg);
-}
-.folder.inner-folder[x-data][x-data*="isOpen: true"] i[icon-name="chevron-right"] {
-    transform: rotate(90deg);
-}
-
-/* 子文件列表展开过渡 */
-.filelist {
-    transition: max-height 0.3s ease, opacity 0.3s ease;
-    overflow: hidden;
-}
-.filelist[x-show="true"] {
-    max-height: 1000px; /* 足够显示所有子元素 */
-    opacity: 1;
-}
-.filelist[x-show="false"] {
-    max-height: 0;
-    opacity: 0;
-}
-
-.note-navigation {
-  display: flex;
-  justify-content: space-between;
-  margin: 2rem 0;
-  padding: 1rem;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
-}
-
-.note-navigation a {
-  text-decoration: none;
-  color: #0077cc;
-  font-weight: 500;
-}
-
-.note-navigation a:hover {
-  text-decoration: underline;
-}
-
