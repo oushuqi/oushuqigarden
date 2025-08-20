@@ -18,9 +18,10 @@ body {
   min-height: 100vh;
 }
 
-/* 主体撑满剩余空间 */
+/* 主体撑满剩余空间，并留出 footer 高度 */
 main {
   flex: 1 0 auto;
+  padding-bottom: 100px; /* 留出 footer 高度 */
 }
 
 /* 固定底部 footer */
@@ -41,9 +42,9 @@ main {
 
 /* 小猫 GIF 样式 */
 .cat-gif {
-  max-height: 80px; /* 保持比例，不超出 footer */
+  max-height: 80px;
   max-width: 100%;
-  object-fit: contain; /* 保持原始比例 */
+  object-fit: contain;
   animation: float 2s ease-in-out infinite;
 }
 
