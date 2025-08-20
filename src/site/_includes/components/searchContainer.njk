@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let searchIndex = [];
 
   // 1️⃣ 加载 searchIndex.json
-  fetch("/searchIndex.json")
+  fetch("/search-index.njk")
     .then(res => res.json())
     .then(data => searchIndex = data)
     .catch(err => console.error("Failed to load search index:", err));
