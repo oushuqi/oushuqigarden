@@ -16,73 +16,120 @@ permalink: "notes/{{ page.fileSlug | slugify }}/"
   <body class="theme-{{meta.baseTheme}} markdown-preview-view markdown-rendered markdown-preview-section {{meta.bodyClasses}}">
 
     {# 雨滴背景 Canvas #}
-    <canvas id="rain-canvas"></canvas>
-    <script>
-      const canvas = document.getElementById('rain-canvas');
-      const ctx = canvas.getContext('2d');
+    <!-- 放在 <body> 内最顶部 -->
+<canvas id="rain-canvas"></canvas>
+<script>
+const canvas = document.getElementById('rain-canvas');
+const ctx = canvas.getContext('2d');
 
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-      window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      });
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
 
-      const raindrops = [];
-      const totalDrops = 200;
+class Raindrop {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * -canvas.height;
+    this.length = Math.random() * 20 + 10;
+    this.speed = Math.random() * 4 + 2;
+    this.opacity = Math.random() * 0.5 + 0.3;
+  }
+  fall() {
+    this.y += this.speed;
+    if(this.y > canvas.height) {
+      this.y = 0;
+      this.x = Math.random() * canvas.width;
+      this.opacity = Math.random() * 0.5 + 0.3;
+    }
+  }
+  draw() {
+    const grad = ctx.createLinearGradient(this.x, this.y, this.x, this.y + this.length);
+    grad.addColorStop(0, `rgba(255,255,255,${this.opacity})`);
+    grad.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(this.x, this.y);
+    ctx.lineTo(this.x, this.y + this.length);
+    ctx.stroke();
+  }
+}
 
-      for(let i=0; i<totalDrops; i++){
-        raindrops.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          length: Math.random() * 25 + 10,
-          speed: Math.random() * 5 + 2,
-          opacity: Math.random() * 0.5 + 0.3
-        });
-      }
+const drops = [];
+const totalDrops = 200;
+for(let i=0;i<totalDrops;i++){
+  drops.push(new Raindrop());
+}
 
-      function drawRain(){
-        ctx.clearRect(0,0,canvas.width,canvas.height);
+// 水花效果
+class Splash {
+  constructor(x, y){
+    this.x = x;
+    this.y = y;
+    this.radius = Math.random() * 2 + 1;
+    this.opacity = 1;
+    this.speed = Math.random() * 1 + 0.5;
+  }
+  update() {
+    this.radius += this.speed;
+    this.opacity -= 0.02;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+    ctx.strokeStyle = `rgba(255,255,255,${this.opacity})`;
+    ctx.stroke();
+  }
+}
 
-        raindrops.forEach(drop => {
-          const gradient = ctx.createLinearGradient(drop.x, drop.y, drop.x, drop.y + drop.length);
-          gradient.addColorStop(0, `rgba(255,255,255,${drop.opacity})`);
-          gradient.addColorStop(1, 'rgba(255,255,255,0)');
+const splashes = [];
 
-          ctx.strokeStyle = gradient;
-          ctx.lineWidth = 1.2;
-          ctx.beginPath();
-          ctx.moveTo(drop.x, drop.y);
-          ctx.lineTo(drop.x, drop.y + drop.length);
-          ctx.stroke();
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-          drop.y += drop.speed;
-          if(drop.y > canvas.height){
-            drop.y = -drop.length;
-            drop.x = Math.random() * canvas.width;
-            drop.opacity = Math.random() * 0.5 + 0.3;
-          }
-        });
+  drops.forEach(drop => {
+    drop.fall();
+    drop.draw();
 
-        requestAnimationFrame(drawRain);
-      }
+    // 判断落到页面元素上，产生水花
+    const element = document.elementFromPoint(drop.x, drop.y);
+    if(element && !element.id.includes('rain-canvas')){
+      splashes.push(new Splash(drop.x, drop.y));
+      drop.reset();
+    }
+  });
 
-      drawRain();
-    </script>
+  splashes.forEach((s,i) => {
+    s.update();
+    s.draw();
+    if(s.opacity <= 0) splashes.splice(i,1);
+  });
 
-    <style>
-      #rain-canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: -1;
-        background: radial-gradient(ellipse at center, #0b0c10 0%, #1f2833 100%);
-      }
-    </style>
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+<style>
+#rain-canvas {
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events: none;
+  z-index: -1;
+}
+</style>
+
 
     {%include "components/notegrowthhistory.njk"%}
     
