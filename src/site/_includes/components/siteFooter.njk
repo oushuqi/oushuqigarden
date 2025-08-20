@@ -29,7 +29,7 @@ main {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 80px; /* 可根据gif大小调整 */
+  height: 100px; /* 足够放 GIF */
   z-index: 1000;
   background: transparent;
   display: flex;
@@ -41,12 +41,13 @@ main {
 
 /* 小猫 GIF 样式 */
 .cat-gif {
-  height: 60px; /* 根据需要调整大小 */
-  width: auto;
+  max-height: 80px; /* 保持比例，不超出 footer */
+  max-width: 100%;
+  object-fit: contain; /* 保持原始比例 */
   animation: float 2s ease-in-out infinite;
 }
 
-/* 悬浮动画 */
+/* 浮动动画 */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-5px); }
@@ -55,11 +56,11 @@ main {
 /* 移动端适配 */
 @media (max-width: 768px) {
   .fixed-footer {
-    height: 60px;
+    height: 70px;
     padding: 0 10px;
   }
   .cat-gif {
-    height: 40px;
+    max-height: 50px;
   }
 }
 </style>
