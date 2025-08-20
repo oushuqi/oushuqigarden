@@ -1,56 +1,21 @@
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const searchInput = document.getElementById("term");
-  const resultsContainer = document.getElementById("search-results");
-  let searchIndex = [];
-
-  // 1️⃣ 加载 searchIndex.json
-  fetch("/search-index.njk")
-    .then(res => res.json())
-    .then(data => searchIndex = data)
-    .catch(err => console.error("Failed to load search index:", err));
-
-  // 2️⃣ 高亮函数
-  function highlight(text, query) {
-    if (!query) return text;
-    const escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
-    const regex = new RegExp(`(${escapedQuery})`, "gi");
-    return text.replace(regex, "<mark>$1</mark>");
-  }
-
-  // 3️⃣ 渲染搜索结果
-  function renderResults(query) {
-    const term = query.trim().toLowerCase();
-    if (!term) {
-      resultsContainer.innerHTML = "";
-      return;
-    }
-
-    const filtered = searchIndex.filter(item =>
-      item.title.toLowerCase().includes(term) ||
-      item.content.toLowerCase().includes(term) ||
-      (item.tags && item.tags.join(" ").toLowerCase().includes(term))
-    );
-
-    resultsContainer.innerHTML = filtered.map(item => {
-      return `<div class="result">
-                <a href="${item.url}">
-                  <h3>${highlight(item.title, term)}</h3>
-                  <p>${highlight(item.content, term)}</p>
-                </a>
-              </div>`;
-    }).join("");
-
-    if(filtered.length === 0){
-      resultsContainer.innerHTML = `<p>No results found for "<strong>${term}</strong>"</p>`;
-    }
-  }
-
-  // 4️⃣ 监听输入
-  searchInput.addEventListener("input", e => {
-    renderResults(e.target.value);
-  });
-
-  // 可选：监听 Enter / ESC / 上下箭头等快捷键
-});
-</script>
+<div class="search-container" id="globalsearch">
+    <button class="search-toggle" aria-label="Open Search" onclick="toggleSearch()">
+        🔍
+    </button>
+    <div class="search-box">
+        <input type="search" id="term" placeholder="Start typing..." autocomplete="off">
+        <div id="search-results" role="listbox"></div>
+        <footer class="search-box-footer">
+            <ul class="navigation-hints">
+                <li>Enter to select</li>
+                <li class="navigation-hint--icon">
+                    <i class="icon-arrow-up" aria-hidden="true"></i>
+                    <i class="icon-arrow-down" aria-hidden="true"></i>
+                    to navigate
+                </li>
+                <li>ESC to close</li>
+            </ul>
+        </footer>
+    </div>
+</div>
+{% include "components/searchScript.njk" %}
