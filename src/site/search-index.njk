@@ -4,13 +4,11 @@ eleventyExcludeFromCollections: true
 ---
 [
 {% for post in collections.note %}
-  {% set rawContent = post.templateContent | striptags(true) %}
-  {% set truncated = rawContent | slice(0, 100) %}
+  {% set rawContent = post.templateContent | striptags(true) | trim %}
+  {% set truncated = rawContent | slice(0, 100) | trim %}
 
-  {# 智能截断：避免单词断开 #}
-  {% set lastSpace = truncated | lastIndexOf(' ') %}
-  {% if lastSpace > 50 %}
-    {% set truncated = truncated | slice(0, lastSpace) %}
+  {% if rawContent | length > truncated | length %}
+    {% set truncated = truncated ~ "…" %}
   {% endif %}
 
   {
@@ -24,7 +22,7 @@ eleventyExcludeFromCollections: true
       {% if post.data.tags %}
         {% set tags = tags.concat(post.data.tags) %}
       {% endif %}
-      {% set tags = tags | reject("equalto", "") %}  {# 去掉空标签 #}
+      {% set tags = tags | reject("equalto", "") %}
       {% for tag in tags %}
         "{{ tag | validJson }}" {% if not loop.last %},{% endif %}
       {% endfor %}
