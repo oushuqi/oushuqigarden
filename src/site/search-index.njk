@@ -2,12 +2,33 @@
 permalink: /searchIndex.json
 eleventyExcludeFromCollections: true
 ---
-[{% for post in collections.note %}
-{
-		"title": {% if post.data.title %}{{post.data.title | jsonify | safe }}{% else %}{{post.fileSlug | jsonify | safe }}{% endif %},
-		"date":"{{ post.date }}",
-		"url":"{{ post.url }}",
-		"content": {{ post.templateContent | striptags(true) | link | jsonify | safe  }},
-		"tags": [{{post.templateContent | link | searchableTags | safe }} {% if post.data.tags %}{% for tag in post.data.tags %}"{{tag|validJson}}"{% if not loop.last %},{% endif %}{% endfor %}{% endif %}]
-}{% if not loop.last %},{% endif %}
-{% endfor %}]
+[
+{% for post in collections.note %}
+  {% set rawContent = post.templateContent | striptags(true) %}
+  {% set truncated = rawContent | slice(0, 100) %}
+
+  {# 智能截断：避免单词断开 #}
+  {% set lastSpace = truncated.rfind(' ') %}
+  {% if lastSpace > 50 %}
+    {% set truncated = truncated | slice(0, lastSpace) %}
+  {% endif %}
+
+  {
+    "title": {{ (post.data.title or post.fileSlug) | jsonify | safe }},
+    "date": "{{ post.date }}",
+    "url": "{{ post.url }}",
+    "content": {{ truncated | link | jsonify | safe }},
+    "tags": [
+      {% set tags = [] %}
+      {% set tags = tags.concat(post.templateContent | link | searchableTags | safe | split(",")) %}
+      {% if post.data.tags %}
+        {% set tags = tags.concat(post.data.tags) %}
+      {% endif %}
+      {% set tags = tags | reject("equalto", "") %}  {# 去掉空标签 #}
+      {% for tag in tags %}
+        "{{ tag | validJson }}" {% if not loop.last %},{% endif %}
+      {% endfor %}
+    ]
+  }{% if not loop.last %},{% endif %}
+{% endfor %}
+]
