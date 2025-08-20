@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+  <style>
+    body {
+      font-family: "Noto Serif SC", "思源宋体", serif;
+      font-style: italic;
+      margin: 0;
+      padding: 0;
+      line-height: 1.7;
+      background: #fff;
+      color: #333;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 0 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      margin: 0.8rem 0;
+    }
+
+    /* 页脚样式 */
+    .site-footer {
+      margin-top: 4rem;
+      padding: 2rem 1rem;
+      text-align: center;
+      font-family: "Noto Serif SC", "思源宋体", serif;
+      font-style: italic;
+      color: #444;
+      background: linear-gradient(to right, #f8f8f8, #fafafa);
+      border-top: 1px solid #ddd;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer-content {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .footer-quote {
+      font-size: 1.1rem;
+      margin-bottom: 0.8rem;
+      color: #666;
+      position: relative;
+      display: inline-block;
+    }
+
+    /* ✨ 流动的下划线 */
+    .footer-quote::after {
+      content: "";
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      height: 2px;
+      width: 100%;
+      background: linear-gradient(90deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1);
+      background-size: 200% 100%;
+      animation: underline-flow 4s linear infinite;
+    }
+
+    @keyframes underline-flow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    .footer-meta {
+      font-size: 0.9rem;
+      color: #999;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .back-to-top {
+      font-size: 0.85rem;
+      text-decoration: none;
+      color: #555;
+      border: 1px solid #aaa;
+      padding: 4px 10px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .back-to-top:hover {
+      background: #333;
+      color: #fff;
+    }
+
+    /* ✨ 多个小星星动画 */
+    .star {
+      position: absolute;
+      font-size: 1.2rem;
+      color: #ffd700;
+      opacity: 0.7;
+      animation: twinkle 3s infinite alternate;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.2; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1.2); }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>{{ title }}</h1>
+    <p>{{ content | safe }}</p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p class="footer-quote">「生命是一场奇旅，我希望你永远超级幸福。」</p>
+      <p class="footer-meta">© 2025 爵乐 · All rights reserved.</p>
+      <a href="#" class="back-to-top">返回顶部 ↑</a>
+    </div>
+
+    <!-- ✨ 小星星们 -->
+    <span class="star" style="top:20px; left:15%; animation-delay: 1s;">✨</span>
+    <span class="star" style="top:50px; right:20%; animation-delay: 2s;">✨</span>
+    <span class="star" style="bottom:30px; left:25%; animation-delay: 3s;">✨</span>
+    <span class="star" style="bottom:40px; right:15%; animation-delay: 1.5s;">✨</span>
+    <span class="star" style="top:80px; left:50%; animation-delay: 2.5s;">✨</span>
+  </footer>
+</body>
+</html>
