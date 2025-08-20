@@ -1,6 +1,7 @@
+{# src/site/_includes/components/siteFooter.njk #}
 <footer class="fixed-footer">
   <div class="footer-content">
-    <span>© {{ new Date().getFullYear() }} {{ meta.siteName }}. All rights reserved.</span>
+    <span>© 2025 {{ meta.siteName }}. All rights reserved.</span>
     <span style="margin-left: 20px;">Powered by YourSite</span>
   </div>
 </footer>
@@ -34,8 +35,16 @@ main {
   font-size: 14px;
   color: #555;
   padding: 10px 0;
-  z-index: 1000; /* 确保不被侧边栏覆盖 */
+  z-index: 1000; /* 保证不被侧边栏覆盖 */
   background: transparent;
+  pointer-events: auto;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* 悬停动画：轻微上浮 + 透明度变化 */
+.fixed-footer:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
 }
 
 /* 移动端适配 */
