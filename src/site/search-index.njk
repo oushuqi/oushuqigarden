@@ -8,7 +8,7 @@ eleventyExcludeFromCollections: true
   {% set truncated = rawContent | slice(0, 100) %}
 
   {# 智能截断：避免单词断开 #}
-  {% set lastSpace = truncated.rfind(' ') %}
+  {% set lastSpace = truncated | lastIndexOf(' ') %}
   {% if lastSpace > 50 %}
     {% set truncated = truncated | slice(0, lastSpace) %}
   {% endif %}
