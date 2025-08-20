@@ -1,49 +1,21 @@
 {# src/site/_includes/components/siteFooter.njk #}
 <footer class="fixed-footer">
-  <div class="footer-content">
-    <img src="https://res.cloudinary.com/ddirafvdx/image/upload/v1755694078/catwave_y2dya0.gif" alt="动态小猫" class="cat-gif">
-  </div>
+  <img src="https://res.cloudinary.com/ddirafvdx/image/upload/v1755694078/catwave_y2dya0.gif" alt="动态小猫" class="cat-gif">
 </footer>
 
 <style>
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* 主体撑满剩余空间，并留出 footer 高度 */
-main {
-  flex: 1 0 auto;
-  padding-bottom: 100px; /* 留出 footer 高度 */
-}
-
-/* 固定底部 footer */
+/* 固定底部 footer，只包含 GIF */
 .fixed-footer {
   position: fixed;
   bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100px; /* 足够放 GIF */
+  right: 0;
   z-index: 1000;
-  background: transparent;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 0 20px;
   pointer-events: auto;
 }
 
 /* 小猫 GIF 样式 */
 .cat-gif {
   max-height: 80px;
-  max-width: 100%;
   object-fit: contain;
   animation: float 2s ease-in-out infinite;
 }
@@ -56,10 +28,6 @@ main {
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-  .fixed-footer {
-    height: 70px;
-    padding: 0 10px;
-  }
   .cat-gif {
     max-height: 50px;
   }
