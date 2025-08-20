@@ -6,16 +6,17 @@
 </footer>
 
 <style>
+  /* Footer固定在底部，背景透明 */
   .poem-footer {
+    position: relative;
+    width: 100%;
     text-align: center;
-    font-family: "Source Han Serif", "思源宋体", serif;
+    font-family: "Source Han Serif","思源宋体",serif;
     font-style: italic;
     font-size: 16px;
+    color: #222; /* 深色字体，适合任何背景 */
     padding: 15px 0;
-    position: relative;
     overflow: hidden;
-    color: #222; /* 深色字体 */
-    background: #fdf6e3; /* 可以去掉或换浅色背景 */
   }
 
   .poem-line {
@@ -23,6 +24,7 @@
     z-index: 2;
   }
 
+  /* 星星容器 */
   #star-container {
     position: absolute;
     top: 0;
@@ -34,6 +36,7 @@
     z-index: 1;
   }
 
+  /* 掉落星星 */
   .star {
     position: absolute;
     top: -10px;
@@ -52,6 +55,7 @@
     }
   }
 
+  /* 流星 */
   .shooting-star {
     position: absolute;
     width: 80px;
