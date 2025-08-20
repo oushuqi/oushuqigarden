@@ -1,37 +1,68 @@
-<div class="search-container">
-  <input type="text" id="searchInput" placeholder="搜索笔记..." autocomplete="off">
-  <div id="searchResults"></div>
+<div class="search-container" id="globalsearch" onclick="toggleSearch()">
+  <div class="search-box">
+    <input type="search" id="term" placeholder="Start typing...">
+    <div id="search-results"></div>
+    <footer class="search-box-footer">
+      <div class="navigation-hint"><span>Enter to select</span></div>
+      <div class="navigation-hint align-icon">
+        <i icon-name="arrow-up" aria-hidden="true"></i>
+        <i icon-name="arrow-down" aria-hidden="true"></i>
+        <span>to navigate</span>
+      </div>
+      <div class="navigation-hint"><span>ESC to close</span></div>
+    </footer>
+  </div>
 </div>
 
 <style>
-  .search-container { position: relative; margin: 20px 0; }
-  #searchInput { width: 100%; padding: 8px; font-size: 16px; }
-  #searchResults { margin-top: 5px; }
+  #term { width: 100%; padding: 8px; font-size: 16px; }
+  #search-results { margin-top: 5px; max-height: 300px; overflow-y: auto; }
   .search-result { padding: 6px 10px; border-bottom: 1px solid #ddd; }
   .search-result a { text-decoration: none; color: #0077cc; }
   .search-result mark { background: yellow; color: black; }
 </style>
 
-<div class="search-container" id="globalsearch" onclick="toggleSearch()">
-    <div class="search-box">
-        <input type="search" id="term" placeholder="Start typing...">
-        <div id="search-results"></div>
-        <footer class="search-box-footer">
-            <div class="navigation-hint">
-                <span>Enter to select</span>
-            </div>
+<script>
+  let searchIndex = [];
 
-            <div class="navigation-hint align-icon">
-                <i  icon-name="arrow-up" aria-hidden="true"></i>
-                <i  icon-name="arrow-down" aria-hidden="true"></i>
-                <span>to navigate</span>
-            </div>
+  // 加载搜索数据
+  fetch('/searchIndex.json')
+    .then(res => res.json())
+    .then(data => { searchIndex = data; });
 
-            <div class="navigation-hint">
-                <span>ESC to close</span>
-            </div>
+  // 高亮匹配词
+  function highlightKeyword(text, keyword) {
+    if (!keyword) return text;
+    const regex = new RegExp(`(${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    return text.replace(regex, '<mark>$1</mark>');
+  }
 
-        </footer>
-    </div>
-</div>
-{%include "components/searchScript.njk"%}
+  const input = document.getElementById('term');
+  const resultsContainer = document.getElementById('search-results');
+
+  input.addEventListener('input', function() {
+    const term = this.value.trim();
+    resultsContainer.innerHTML = '';
+
+    if (!term) return;
+
+    const results = searchIndex.filter(post => 
+      post.title.toLowerCase().includes(term.toLowerCase()) ||
+      post.content.toLowerCase().includes(term.toLowerCase())
+    );
+
+    results.forEach(post => {
+      const highlightedTitle = highlightKeyword(post.title, term);
+      const excerpt = post.content.substring(0, 50); // 截取前100字
+      const highlightedExcerpt = highlightKeyword(excerpt, term);
+
+      const resultEl = document.createElement('div');
+      resultEl.className = 'search-result';
+      resultEl.innerHTML = `
+        <a href="${post.url}" target="_blank"><strong>${highlightedTitle}</strong></a>
+        <p>${highlightedExcerpt}...</p>
+      `;
+      resultsContainer.appendChild(resultEl);
+    });
+  });
+</script>
