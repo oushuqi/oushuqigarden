@@ -1,23 +1,56 @@
-<div class="search-container" id="globalsearch" onclick="toggleSearch()">
-    <div class="search-box">
-        <input type="search" id="term" placeholder="Start typing...">
-        <div id="search-results"></div>
-        <footer class="search-box-footer">
-            <div class="navigation-hint">
-                <span>Enter to select</span>
-            </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const searchInput = document.getElementById("term");
+  const resultsContainer = document.getElementById("search-results");
+  let searchIndex = [];
 
-            <div class="navigation-hint align-icon">
-                <i  icon-name="arrow-up" aria-hidden="true"></i>
-                <i  icon-name="arrow-down" aria-hidden="true"></i>
-                <span>to navigate</span>
-            </div>
+  // 1️⃣ 加载 searchIndex.json
+  fetch("/searchIndex.json")
+    .then(res => res.json())
+    .then(data => searchIndex = data)
+    .catch(err => console.error("Failed to load search index:", err));
 
-            <div class="navigation-hint">
-                <span>ESC to close</span>
-            </div>
+  // 2️⃣ 高亮函数
+  function highlight(text, query) {
+    if (!query) return text;
+    const escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+    const regex = new RegExp(`(${escapedQuery})`, "gi");
+    return text.replace(regex, "<mark>$1</mark>");
+  }
 
-        </footer>
-    </div>
-</div>
-{%include "components/searchScript.njk"%}
+  // 3️⃣ 渲染搜索结果
+  function renderResults(query) {
+    const term = query.trim().toLowerCase();
+    if (!term) {
+      resultsContainer.innerHTML = "";
+      return;
+    }
+
+    const filtered = searchIndex.filter(item =>
+      item.title.toLowerCase().includes(term) ||
+      item.content.toLowerCase().includes(term) ||
+      (item.tags && item.tags.join(" ").toLowerCase().includes(term))
+    );
+
+    resultsContainer.innerHTML = filtered.map(item => {
+      return `<div class="result">
+                <a href="${item.url}">
+                  <h3>${highlight(item.title, term)}</h3>
+                  <p>${highlight(item.content, term)}</p>
+                </a>
+              </div>`;
+    }).join("");
+
+    if(filtered.length === 0){
+      resultsContainer.innerHTML = `<p>No results found for "<strong>${term}</strong>"</p>`;
+    }
+  }
+
+  // 4️⃣ 监听输入
+  searchInput.addEventListener("input", e => {
+    renderResults(e.target.value);
+  });
+
+  // 可选：监听 Enter / ESC / 上下箭头等快捷键
+});
+</script>
